@@ -227,7 +227,6 @@ default-proxy: &default-proxy # 默认代理组
     - 🇭🇰香港节点
     - 🇨🇳台湾节点
     - 🇸🇬狮城节点
-    - 🇯🇵日本节点
     - 🇺🇲美国节点
     - DIRECT
 
@@ -241,7 +240,6 @@ default-direct: &default-direct # 默认直连组
     - 🇭🇰香港节点
     - 🇨🇳台湾节点
     - 🇸🇬狮城节点
-    - 🇯🇵日本节点
     - 🇺🇲美国节点
 
 proxy-groups:
@@ -268,7 +266,6 @@ proxy-groups:
       - 🇭🇰香港节点
       - 🇨🇳台湾节点
       - 🇸🇬狮城节点
-      - 🇯🇵日本节点
       - 🇺🇲美国节点
       - DIRECT
 
