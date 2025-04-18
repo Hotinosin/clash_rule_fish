@@ -212,7 +212,7 @@ health-check-general: &health-check-general # 代理组健康检查通用配置
   <<: *use-all-proxy-providers
   url: http://www.gstatic.com/generate_204
   interval: 30 # 健康检查间隔
-  tolerance: 200 # 延迟容忍度，单位ms
+  tolerance: 100 # 延迟容忍度，单位ms
   lazy: true # 未选中当前组时不进行测试
   timeout: 5000 # 健康检查超时，单位ms
   max-failed-times: 5 # 失败次数，超过则执行一次强制健康检查
@@ -278,60 +278,49 @@ proxy-groups:
   - name: Ⓜ️微软Copilot
     type: select
     <<: *default-proxy
-    icon: https://ghfast.top/https://github.com/refined-fish/clash_rule_fish/blob/main/Icons/Microsoft_365_Copilot.png
 
-  - name: ⏣OpenAi
+  - name: 🅰️OpenAi
     type: select
     <<: *default-proxy
-    icon: https://ghfast.top/https://github.com/refined-fish/clash_rule_fish/blob/main/Icons/Chat_GPT.png
 
   - name: ✈️Telegram
     type: select
     <<: *default-proxy
-    icon: https://ghfast.top/https://github.com/refined-fish/clash_rule_fish/blob/main/Icons/Telegram.png
 
   - name: 🧱GFW
     type: select
     <<: *default-proxy
-    icon: https://ghfast.top/https://github.com/refined-fish/clash_rule_fish/blob/main/Icons/GFW.png
 
   - name: 📺巴哈姆特
     type: select
     proxies:
       - 🇭🇰香港节点
       - 🇨🇳台湾节点
-    icon: https://ghfast.top/https://github.com/refined-fish/clash_rule_fish/blob/main/Icons/巴哈姆特.png
 
   - name: 🎮Steam
     type: select
     <<: *default-direct
-    icon: https://ghfast.top/https://github.com/refined-fish/clash_rule_fish/blob/main/Icons/Steam.png
 
   ##################################
   - name: 🇭🇰香港节点
     type: url-test
     <<: *health-check-general
-    filter: "港|HK|hk|Hong Kong|HongKong|hongkong"
-
-  - name: 🇯🇵日本节点
-    type: url-test
-    <<: *health-check-general
-    filter: "日本|川日|东京|大阪|泉日|埼玉|沪日|深日|JP|Japan"
+    filter: "(?=.*(港|HK|hk|Hong Kong|HongKong|hongkong|(?i)Hong))^((?!(台|日|韩|新|深|美|倍)).)*$"
 
   - name: 🇺🇲美国节点
     type: url-test
     <<: *health-check-general
-    filter: "美|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉拉|西雅图|芝加哥|US|United States"
+    filter: "(?=.*(美|US|(?i)States|America))^((?!(港|台|日|韩|新|倍)).)*$"
 
   - name: 🇨🇳台湾节点
     type: url-test
     <<: *health-check-general
-    filter: "台|新北|彰化|TW|Taiwan"
+    filter: "(?=.*(台|新北|彰化|TW|Taiwan))^((?!(港|美|日|韩|新|倍)).)*$"
 
   - name: 🇸🇬狮城节点
     type: url-test
     <<: *health-check-general
-    filter: "新加坡|坡|狮城|SG|Singapore"
+    filter: "(?=.*(新加坡|SG|(?i)Singapore))^((?!(港|台|韩|日|美|倍)).)*$"
 
 ## 规则提供者设置---------------------------------------------------------------------------------------------------
 rule-providers-general: &rule-providers-general
