@@ -216,7 +216,7 @@ health-check-general: &health-check-general # 代理组健康检查通用配置
   lazy: true # 未选中当前组时不进行测试
   timeout: 5000 # 健康检查超时，单位ms
   max-failed-times: 5 # 失败次数，超过则执行一次强制健康检查
-  filter: "机场|地址|流量|订阅"
+  filter: "^(?!.*(机场|地址|流量|订阅)).*$"
 
 default-proxy: &default-proxy # 默认代理组
   proxies:
