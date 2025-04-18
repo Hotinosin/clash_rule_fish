@@ -37,8 +37,8 @@ keep-alive-interval: 30 # 发送心跳包的间隔，无回应则最多重发9�
 disable-keep-alive: false # 禁用 keep alive，即允许长链接一直存在
 
 ## API面板设置---------------------------------------------------------------------------------------------------
-external-controller: 0.0.0.0:9090 #🔴API面板监听地址
-secret: "hd54RIm0LiUpyu" #🔴API面板访问密钥
+external-controller: 0.0.0.0:9095 #🔴API面板监听地址
+secret: "" #🔴API面板访问密钥
 external-ui: ./ui #🔴API面板静态资源路径
 external-ui-name: zashboard # API面板名，配合路径拼接成路径，例如/ui/metacubexd
 external-ui-url: "https://ghfast.top/https://github.com/Zephyruso/zashboard/releases/latest/download/dist.zip" # API面板下载地址
@@ -71,7 +71,7 @@ geox-url: # GEO数据库下载地址，内核会按需下载，未被使用的�
 public-dns: &public-dns # 快速的DNS，不关心是否存在污染和劫持，只要快就好了
   - dhcp://wan # 指定网卡DHCP获取的DNS，硬路由的wan口网卡名一般为wan
   - dhcp://eth1 # 软路由的wan口一般为最后一张网卡，eth0,eth1 双网口就是eth1
-  - 223.5.5.5 # 阿里主DNS
+  - 119.29.29.29 # 阿里主DNS
 
 secure-dns: &secure-dns # 加密的DNS，必须避免被解析为0.0.0.0等污染
   - https://223.5.5.5/dns-query#h3=true # 阿里主DNS，支持H3
@@ -216,6 +216,7 @@ health-check-general: &health-check-general # 代理组健康检查通用配置
   lazy: true # 未选中当前组时不进行测试
   timeout: 5000 # 健康检查超时，单位ms
   max-failed-times: 5 # 失败次数，超过则执行一次强制健康检查
+  filter: "机场|地址|流量|订阅"
 
 default-proxy: &default-proxy # 默认代理组
   proxies:
@@ -307,11 +308,6 @@ proxy-groups:
     <<: *health-check-general
     filter: "(?=.*(港|HK|hk|Hong Kong|HongKong|hongkong|(?i)Hong))^((?!(台|日|韩|新|深|美|倍)).)*$"
 
-  - name: 🇺🇲美国节点
-    type: url-test
-    <<: *health-check-general
-    filter: "(?=.*(美|US|(?i)States|America))^((?!(港|台|日|韩|新|倍)).)*$"
-
   - name: 🇨🇳台湾节点
     type: url-test
     <<: *health-check-general
@@ -321,6 +317,12 @@ proxy-groups:
     type: url-test
     <<: *health-check-general
     filter: "(?=.*(新加坡|SG|(?i)Singapore))^((?!(港|台|韩|日|美|倍)).)*$"
+
+  - name: 🇺🇲美国节点
+    type: url-test
+    <<: *health-check-general
+    filter: "(?=.*(美|US|(?i)States|America))^((?!(港|台|日|韩|新|倍)).)*$"
+    
 
 ## 规则提供者设置---------------------------------------------------------------------------------------------------
 rule-providers-general: &rule-providers-general
@@ -361,7 +363,7 @@ rules:
   - GEOSITE,tmdb,✅默认代理 # TMDB服务，影视刮削
   - RULE-SET,Ⓜ️微软Copilot-FISH,Ⓜ️微软Copilot # 微软copilot服务
   - GEOSITE,synology,DIRECT # 群晖服务，包括QC
-  - GEOSITE,openai,⏣OpenAi # OpenAi服务
+  - GEOSITE,openai,🅰️OpenAi # OpenAi服务
   - GEOSITE,telegram,✈️Telegram # Telegram服务
   - GEOIP,telegram,✈️Telegram,no-resolve # Telegram服务IP
   - GEOSITE,category-container,✅默认代理 # 各种容器服务
