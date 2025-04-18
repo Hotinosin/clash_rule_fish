@@ -41,7 +41,7 @@ external-controller: 0.0.0.0:9095 #🔴API面板监听地址
 secret: "" #🔴API面板访问密钥
 external-ui: ./ui #🔴API面板静态资源路径
 external-ui-name: zashboard # API面板名，配合路径拼接成路径，例如/ui/metacubexd
-external-ui-url: "https://ghfast.top/https://github.com/Zephyruso/zashboard/releases/latest/download/dist.zip" # API面板下载地址
+external-ui-url: "https://gh-proxy.com/https://github.com/Zephyruso/zashboard/releases/latest/download/dist.zip" # API面板下载地址
 
 ## 外部资源下载设置---------------------------------------------------------------------------------------------------
 global-client-fingerprint: random # 全局客户端指纹，优先级低于其他处的声明
@@ -52,10 +52,10 @@ geodata-loader: standard # GEO文件加载模式，默认memconservative（小�
 geo-auto-update: true # GEO文件自动更新
 geo-update-interval: 24 # 更新间隔，小时
 geox-url: # GEO数据库下载地址，内核会按需下载，未被使用的数据库不会被下载
-  geoip: "https://ghfast.top/https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geoip.dat"
-  geosite: "https://ghfast.top/https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geosite.dat"
-  mmdb: "https://ghfast.top/https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/country.mmdb"
-  asn: "https://ghfast.top/https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/GeoLite2-ASN.mmdb"
+  geoip: "https://gh-proxy.com/https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geoip.dat"
+  geosite: "https://gh-proxy.com/https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geosite.dat"
+  mmdb: "https://gh-proxy.com/https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/country.mmdb"
+  asn: "https://gh-proxy.com/https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/GeoLite2-ASN.mmdb"
 
 ## fakeip下的DNS设置---------------------------------------------------------------------------------------------------
 # 客户端发起网址A的DNS，到达mihomo的DNS模块，mihomo会使用下方的配置进行DNS
