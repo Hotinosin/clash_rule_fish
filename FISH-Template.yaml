@@ -280,6 +280,10 @@ proxy-groups:
     type: select
     <<: *default-proxy
 
+  - name: ✈️ Speedtest
+    type: select
+    <<: *default-proxy
+
   - name: 🅰️OpenAi
     type: select
     <<: *default-proxy
@@ -345,12 +349,36 @@ rule-providers:
     <<: *rule-providers-general
     url: https://raw.githubusercontent.com/refined-fish/clash_rule_fish/refs/heads/main/Ruleset/Ⓜ️微软Copilot-FISH.yaml
     path: ./providers/rule-provider_Ⓜ️微软Copilot-FISH.yaml
-
+  
+  custom_rules:
+    <<: *rule-providers-general
+    url: https://raw.githubusercontent.com/Hotinosin/clash-rule/refs/heads/main/custom_rules.list
+    path: ./providers/rule-provider_custom_rules.list
+    
+  custom_direct:
+    <<: *rule-providers-general
+    url: https://raw.githubusercontent.com/Hotinosin/clash-rule/refs/heads/main/custom_direct.list
+    path: ./providers/rule-provider_custom_direct.list
+    
+  custom_ddns:
+    <<: *rule-providers-general
+    url: https://raw.githubusercontent.com/Hotinosin/clash-rule/refs/heads/main/custom_ddns.list
+    path: ./providers/rule-provider_custom_ddns.list
+  
 ## 路由规则设置---------------------------------------------------------------------------------------------------
 rules:
   # FISH自定义规则块
   - RULE-SET,♻️延迟最低-FISH,✅默认代理 # FISH自定义代理
   - RULE-SET,🌐Direct-FISH,DIRECT # FISH自定义直连
+  - RULE-SET,custom_direct,DIRECT
+  - RULE-SET,custom_ddns,DIRECT
+  - RULE-SET,tencent,DIRECT
+  - RULE-SET,tencent_games,DIRECT
+  - RULE-SET,speedtest_domain,✈️ Speedtest
+  - RULE-SET,custom_rules,✅默认代理
+  - RULE-SET,github_domain,✅默认代理
+  - RULE-SET,youtube_domain,✅默认代理
+  - RULE-SET,google_domain,✅默认代理
 
   # 广告拦截与私有地址绕过块
   - GEOIP,private,DIRECT,no-resolve # 私有地址直连
