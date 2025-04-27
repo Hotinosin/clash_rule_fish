@@ -385,6 +385,56 @@ rule-providers:
     <<: *rule-providers-general
     url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/speedtest.yaml
     path: ./providers/rule/rule-provider_speedtest.yaml
+
+  private:
+    <<: *rule-providers-general
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/private.yaml
+    path: ./providers/rule/rule-provider_private.yaml
+
+  telegram:
+    <<: *rule-providers-general
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/telegram.yaml
+    path: ./providers/rule/rule-provider_telegram.yaml
+
+  netflix:
+    <<: *rule-providers-general
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/netflix.yaml
+    path: ./providers/rule/rule-provider_netflix.yaml
+
+  paypal:
+    <<: *rule-providers-general
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/paypal.yaml
+    path: ./providers/rule/rule-provider_paypal.yaml
+
+  onedrive:
+    <<: *rule-providers-general
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/onedrive.yaml
+    path: ./providers/rule/rule-provider_onedrive.yaml
+
+  microsoft:
+    <<: *rule-providers-general
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/microsoft.yaml
+    path: ./providers/rule/rule-provider_microsoft.yaml
+
+  apple:
+    <<: *rule-providers-general
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/apple-cn.yaml
+    path: ./providers/rule/rule-provider_apple.yaml
+
+  tiktok:
+    <<: *rule-providers-general
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/tiktok.yaml
+    path: ./providers/rule/rule-provider_tiktok.yaml
+
+  cn:
+    <<: *rule-providers-general
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/cn.yaml
+    path: ./providers/rule/rule-provider_cn.yaml
+
+  tencent:
+    <<: *rule-providers-general
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/tencent.yaml
+    path: ./providers/rule/rule-provider_tencent.yaml
     
   custom_rules:
     <<: *rule-providers-general
@@ -414,13 +464,24 @@ rules:
   - RULE-SET,♻️延迟最低-FISH,✅默认代理 # FISH自定义代理
   - RULE-SET,🌐Direct-FISH,DIRECT # FISH自定义直连
   # Ho自定义规则块
-  - RULE-SET,custom_direct,DIRECT
-  - RULE-SET,custom_ddns,DIRECT
   - RULE-SET,speedtest,✈️ Speedtest
-  - RULE-SET,custom_rules,✅默认代理
+  - RULE-SET,private,DIRECT
+  - RULE-SET,custom_direct,DIRECT
+  - RULE-SET,custom_ddns,✅默认代理
+  - RULE-SET,tencent,DIRECT
+  - RULE-SET,custom_rule,✅默认代理
+  - RULE-SET,apple,DIRECT
+  - RULE-SET,ai,✅默认代理
   - RULE-SET,github,✅默认代理
   - RULE-SET,youtube,✅默认代理
   - RULE-SET,google,✅默认代理
+  - RULE-SET,onedrive,DIRECT
+  - RULE-SET,microsoft,DIRECT
+  - RULE-SET,tiktok,✅默认代理
+  - RULE-SET,speedtest,DIRECT
+  - RULE-SET,telegram,✅默认代理
+  - RULE-SET,netflix,✅默认代理
+  - RULE-SET,cn,DIRECT
 
   # 广告拦截与私有地址绕过块
   - GEOIP,private,DIRECT,no-resolve # 私有地址直连
