@@ -251,6 +251,7 @@ proxy-groups:
   - name: ♻️延迟最低
     type: url-test
     <<: *health-check-general
+    filter: "(?=.*(港|HK|hk|Hong Kong|HongKong|hongkong|(?i)Hong))^((?!(OneYuan|日|韩|深|美|倍)).)*$"
 
   - name: ⚠️故障切换
     type: fallback
@@ -290,7 +291,7 @@ proxy-groups:
     type: select
     <<: *default-proxy
 
-  - name: 🅰️OpenAi
+  - name: 🅰️Ai
     type: select
     <<: *default-proxy
 
@@ -362,38 +363,49 @@ rule-providers:
 
   github:
     <<: *rule-providers-general
-    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/github.list
-    path: ./providers/rule/rule-provider_github.list
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/github.yaml
+    path: ./providers/rule/rule-provider_github.yaml
 
   youtube:
     <<: *rule-providers-general
-    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/youtube.list
-    path: ./providers/rule/rule-provider_youtube_domain.list
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/youtube.yaml
+    path: ./providers/rule/rule-provider_youtube_domain.yaml
     
   google:
     <<: *rule-providers-general
-    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/google.list
-    path: ./providers/rule/rule-provider_google_domain.list
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/google.yaml
+    path: ./providers/rule/rule-provider_google_domain.yaml
+
+  google-gemini:
+    <<: *rule-providers-general
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/google-gemini.yaml
+    path: ./providers/rule/rule-provider_google-gemini.yaml
 
   speedtest:
     <<: *rule-providers-general
-    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/speedtest.list
-    path: ./providers/rule/rule-provider_speedtest.list
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/speedtest.yaml
+    path: ./providers/rule/rule-provider_speedtest.yaml
     
   custom_rules:
     <<: *rule-providers-general
-    url: https://raw.githubusercontent.com/Hotinosin/clash-rule/refs/heads/main/custom_rules.list
-    path: ./providers/rule/rule-provider_custom_rules.list
+    url: https://raw.githubusercontent.com/Hotinosin/clash-rule/refs/heads/main/payload/custom_rules.yaml
+    path: ./providers/rule/rule-provider_custom_rules.yaml
     
   custom_direct:
     <<: *rule-providers-general
-    url: https://raw.githubusercontent.com/Hotinosin/clash-rule/refs/heads/main/custom_direct.list
-    path: ./providers/rule/rule-provider_custom_direct.list
+    url: https://raw.githubusercontent.com/Hotinosin/clash-rule/refs/heads/main/payload/custom_direct.yaml
+    path: ./providers/rule/rule-provider_custom_direct.yaml
     
   custom_ddns:
     <<: *rule-providers-general
-    url: https://raw.githubusercontent.com/Hotinosin/clash-rule/refs/heads/main/custom_ddns.list
-    path: ./providers/rule/rule-provider_custom_ddns.list
+    url: https://raw.githubusercontent.com/Hotinosin/clash-rule/refs/heads/main/payload/custom_ddns.yaml
+    path: ./providers/rule/rule-provider_custom_ddns.yaml
+
+  openai:
+    <<: *rule-providers-general
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/openai.yaml
+    path: ./providers/rule/rule-provider_openai.yaml
+
   
 ## 路由规则设置---------------------------------------------------------------------------------------------------
 rules:
@@ -425,8 +437,9 @@ rules:
   - GEOSITE,win-update,Ⓜ️微软服务 # 微软更新域名
   - RULE-SET,Ⓜ️微软Copilot-FISH,Ⓜ️微软Copilot # 微软copilot服务
   - GEOSITE,synology,DIRECT # 群晖服务，包括QC
-    # openAI相关
-  - GEOSITE,openai,🅰️OpenAi # OpenAi服务
+    # AI相关
+  - GEOSITE,openai,🅰️Ai # openai服务
+  - GEOSITE,google-gemini,🅰️Ai # gemini
   # telegram相关
   - GEOSITE,telegram,✈️Telegram # Telegram服务
   - GEOIP,telegram,✈️Telegram,no-resolve # Telegram服务IP
