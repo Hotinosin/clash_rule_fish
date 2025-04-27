@@ -363,27 +363,27 @@ rule-providers:
 
   github:
     <<: *rule-providers-general
-    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/github.yaml
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/classical//github.yaml
     path: ./providers/rule/rule-provider_github.yaml
 
   youtube:
     <<: *rule-providers-general
-    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/youtube.yaml
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/classical//youtube.yaml
     path: ./providers/rule/rule-provider_youtube_domain.yaml
     
   google:
     <<: *rule-providers-general
-    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/google.yaml
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/classical//google.yaml
     path: ./providers/rule/rule-provider_google_domain.yaml
 
   google-gemini:
     <<: *rule-providers-general
-    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/google-gemini.yaml
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/classical//google-gemini.yaml
     path: ./providers/rule/rule-provider_google-gemini.yaml
 
   speedtest:
     <<: *rule-providers-general
-    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/speedtest.yaml
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/classical//speedtest.yaml
     path: ./providers/rule/rule-provider_speedtest.yaml
 
   private:
@@ -453,7 +453,7 @@ rule-providers:
 
   openai:
     <<: *rule-providers-general
-    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/openai.yaml
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/classical//openai.yaml
     path: ./providers/rule/rule-provider_openai.yaml
 
   
