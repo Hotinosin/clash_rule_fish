@@ -469,9 +469,8 @@ rules:
   - RULE-SET,custom_direct,DIRECT
   - RULE-SET,custom_ddns,✅默认代理
   - RULE-SET,tencent,DIRECT
-  - RULE-SET,custom_rule,✅默认代理
+  - RULE-SET,custom_rules,✅默认代理
   - RULE-SET,apple,DIRECT
-  - RULE-SET,ai,✅默认代理
   - RULE-SET,github,✅默认代理
   - RULE-SET,youtube,✅默认代理
   - RULE-SET,google,✅默认代理
