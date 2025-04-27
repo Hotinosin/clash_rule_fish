@@ -363,78 +363,84 @@ rule-providers:
 
   github:
     <<: *rule-providers-general
-    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/classical//github.yaml
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/classical/github.yaml
     path: ./providers/rule/rule-provider_github.yaml
 
   youtube:
     <<: *rule-providers-general
-    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/classical//youtube.yaml
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/classical/youtube.yaml
     path: ./providers/rule/rule-provider_youtube_domain.yaml
     
   google:
     <<: *rule-providers-general
-    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/classical//google.yaml
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/classical/google.yaml
     path: ./providers/rule/rule-provider_google_domain.yaml
 
   google-gemini:
     <<: *rule-providers-general
-    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/classical//google-gemini.yaml
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/classical/google-gemini.yaml
     path: ./providers/rule/rule-provider_google-gemini.yaml
 
   speedtest:
     <<: *rule-providers-general
-    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/classical//speedtest.yaml
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/classical/speedtest.yaml
     path: ./providers/rule/rule-provider_speedtest.yaml
 
   private:
     <<: *rule-providers-general
-    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/private.yaml
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/classical/private.yaml
     path: ./providers/rule/rule-provider_private.yaml
 
   telegram:
     <<: *rule-providers-general
-    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/telegram.yaml
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/classical/telegram.yaml
     path: ./providers/rule/rule-provider_telegram.yaml
 
   netflix:
     <<: *rule-providers-general
-    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/netflix.yaml
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/classical/netflix.yaml
     path: ./providers/rule/rule-provider_netflix.yaml
 
   paypal:
     <<: *rule-providers-general
-    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/paypal.yaml
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/classical/paypal.yaml
     path: ./providers/rule/rule-provider_paypal.yaml
 
   onedrive:
     <<: *rule-providers-general
-    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/onedrive.yaml
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/classical/onedrive.yaml
     path: ./providers/rule/rule-provider_onedrive.yaml
 
   microsoft:
     <<: *rule-providers-general
-    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/microsoft.yaml
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/classical/microsoft.yaml
     path: ./providers/rule/rule-provider_microsoft.yaml
 
   apple:
     <<: *rule-providers-general
-    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/apple-cn.yaml
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/classical/apple-cn.yaml
     path: ./providers/rule/rule-provider_apple.yaml
 
   tiktok:
     <<: *rule-providers-general
-    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/tiktok.yaml
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/classical/tiktok.yaml
     path: ./providers/rule/rule-provider_tiktok.yaml
 
   cn:
     <<: *rule-providers-general
-    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/cn.yaml
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/classical/cn.yaml
     path: ./providers/rule/rule-provider_cn.yaml
 
   tencent:
     <<: *rule-providers-general
-    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/tencent.yaml
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/classical/tencent.yaml
     path: ./providers/rule/rule-provider_tencent.yaml
+
+  openai:
+    <<: *rule-providers-general
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/classical/openai.yaml
+    path: ./providers/rule/rule-provider_openai.yaml
+
     
   custom_rules:
     <<: *rule-providers-general
@@ -450,11 +456,6 @@ rule-providers:
     <<: *rule-providers-general
     url: https://raw.githubusercontent.com/Hotinosin/clash-rule/refs/heads/main/payload/custom_ddns.yaml
     path: ./providers/rule/rule-provider_custom_ddns.yaml
-
-  openai:
-    <<: *rule-providers-general
-    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/classical//openai.yaml
-    path: ./providers/rule/rule-provider_openai.yaml
 
   
 ## 路由规则设置---------------------------------------------------------------------------------------------------
