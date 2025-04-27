@@ -360,22 +360,22 @@ rule-providers:
     url: https://raw.githubusercontent.com/refined-fish/clash_rule_fish/refs/heads/main/Ruleset/Ⓜ️微软Copilot-FISH.yaml
     path: ./providers/rule/rule-provider_Ⓜ️微软Copilot-FISH.yaml
 
-  github_domain:
+  github:
     <<: *rule-providers-general
     url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/github.list
-    path: ./providers/rule/rule-provider_github_domain.list
+    path: ./providers/rule/rule-provider_github.list
 
-  youtube_domain:
+  youtube:
     <<: *rule-providers-general
     url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/youtube.list
     path: ./providers/rule/rule-provider_youtube_domain.list
     
-  google_domain:
+  google:
     <<: *rule-providers-general
     url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/google.list
     path: ./providers/rule/rule-provider_google_domain.list
 
-  speedtest_domain:
+  speedtest:
     <<: *rule-providers-general
     url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/speedtest.list
     path: ./providers/rule/rule-provider_speedtest.list
@@ -404,11 +404,11 @@ rules:
   # Ho自定义规则块
   - RULE-SET,custom_direct,DIRECT
   - RULE-SET,custom_ddns,DIRECT
-  - RULE-SET,speedtest_domain,✈️ Speedtest
+  - RULE-SET,speedtest,✈️ Speedtest
   - RULE-SET,custom_rules,✅默认代理
-  - RULE-SET,github_domain,✅默认代理
-  - RULE-SET,youtube_domain,✅默认代理
-  - RULE-SET,google_domain,✅默认代理
+  - RULE-SET,github,✅默认代理
+  - RULE-SET,youtube,✅默认代理
+  - RULE-SET,google,✅默认代理
 
   # 广告拦截与私有地址绕过块
   - GEOIP,private,DIRECT,no-resolve # 私有地址直连
