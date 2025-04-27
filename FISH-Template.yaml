@@ -349,17 +349,17 @@ rule-providers:
 
   github_domain:
     <<: *rule-providers-general
-    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/github_domain.list
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/github.list
     path: ./providers/rule-provider_github_domain.list
 
   youtube_domain:
     <<: *rule-providers-general
-    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/youtube_domain.list
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/youtube.list
     path: ./providers/rule-provider_youtube_domain.list
     
   google_domain:
     <<: *rule-providers-general
-    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/google_domain.list
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/google.list
     path: ./providers/rule-provider_google_domain.list
 
   speedtest_domain:
