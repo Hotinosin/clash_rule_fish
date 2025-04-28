@@ -370,20 +370,20 @@ rules:
   # FISH自定义规则块
   - RULE-SET,🌐Direct-FISH,DIRECT # FISH自定义直连
   # Ho自定义规则块
-  - RULE-SET,speedtest,✈️ Speedtest
+  - GEOSITE,speedtest,✈️ Speedtest
   - RULE-SET,custom_direct,DIRECT
   - RULE-SET,custom_ddns,✅默认代理
   - RULE-SET,custom_rules,✅默认代理
-  - RULE-SET,tencent,DIRECT
-  - RULE-SET,tencent-game,DIRECT
-  - RULE-SET,apple,DIRECT
-  - RULE-SET,onedrive,DIRECT
+  - GEOSITE,tencent,DIRECT
+  - GEOSITE,tencent-game,DIRECT
+  - GEOSITE,apple,DIRECT
+  - GEOSITE,onedrive,DIRECT
   # 常见服务
-  - RULE-SET,github,✅默认代理
-  - RULE-SET,youtube,✅默认代理
-  - RULE-SET,google,✅默认代理
-  - RULE-SET,tiktok,✅默认代理
-  - RULE-SET,netflix,✅默认代理
+  - GEOSITE,github,✅默认代理
+  - GEOSITE,youtube,✅默认代理
+  - GEOSITE,google,✅默认代理
+  - GEOSITE,tiktok,✅默认代理
+  - GEOSITE,netflix,✅默认代理
   # AI相关
   - GEOSITE,openai,🅰️Ai # openai服务
   - GEOSITE,google-gemini,🅰️Ai # gemini
