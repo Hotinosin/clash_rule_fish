@@ -225,7 +225,7 @@ health-check-general: &health-check-general # 代理组健康检查通用配置
 default-proxy: &default-proxy # 默认代理组
   proxies:
     - ✅默认代理
-    - ♻️延迟最低
+    - 🇸🇬🇨🇳新台优选
     - ⚠️故障切换
     - 🖐️手动切换
     - 🇭🇰香港节点
@@ -238,7 +238,7 @@ default-direct: &default-direct # 默认直连组
   proxies:
     - DIRECT
     - ✅默认代理
-    - ♻️延迟最低
+    - 🇸🇬🇨🇳新台优选
     - ⚠️故障切换
     - 🖐️手动切换
     - 🇭🇰香港节点
@@ -248,10 +248,10 @@ default-direct: &default-direct # 默认直连组
 
 proxy-groups:
   ##################################
-  - name: ♻️延迟最低
+  - name: 🇸🇬🇨🇳新台优选
     type: url-test
     <<: *health-check-general
-    filter: "(?=.*(港|HK|hk|Hong Kong|HongKong|hongkong|(?i)Hong))^((?!(OneYuan|日|韩|深|美|倍)).)*$"
+    filter: "(?=.*(新加坡|台湾))^((?!(OneYuan|日|韩|深|美|倍)).)*$"
 
   - name: ⚠️故障切换
     type: fallback
@@ -267,7 +267,7 @@ proxy-groups:
   - name: ✅默认代理
     type: select
     proxies:
-      - ♻️延迟最低
+      - 🇸🇬🇨🇳新台优选
       - ⚠️故障切换
       - 🖐️手动切换
       - 🇭🇰香港节点
@@ -276,40 +276,18 @@ proxy-groups:
       - 🇺🇲美国节点
       - DIRECT
 
-  - name: 🌐默认直连
-    type: select
-    <<: *default-direct
-
-  - name: 🐟漏网之鱼
-    type: select
-    <<: *default-direct
-
   ##################################
-  - name: Ⓜ️微软Copilot
-    type: select
-    <<: *default-proxy
-
-  - name: ✈️ Speedtest
-    type: select
-    <<: *default-proxy
-
   - name: 🅰️Ai
     type: select
     <<: *default-proxy
 
-  - name: ✈️Telegram
+  - name: 国际社交软件
     type: select
     <<: *default-proxy
 
   - name: 🧱GFW
     type: select
     <<: *default-proxy
-
-  - name: 📺巴哈姆特
-    type: select
-    proxies:
-      - 🇭🇰香港节点
-      - 🇨🇳台湾节点
 
   - name: 🎮Steam
     type: select
@@ -318,6 +296,10 @@ proxy-groups:
   - name: Ⓜ️微软服务
     type: select
     <<: *default-direct
+
+  - name: ✈️ Speedtest
+    type: select
+    <<: *default-proxy
 
   ##################################
   - name: 🇭🇰香港节点
@@ -339,7 +321,15 @@ proxy-groups:
     type: url-test
     <<: *health-check-general
     filter: "(?=.*(美|US|(?i)States|America))^((?!(港|台|日|韩|新|倍)).)*$"
-    
+
+  - name: 🌐默认直连
+    type: select
+    <<: *default-direct
+
+  - name: 🐟漏网之鱼
+    type: select
+    <<: *default-direct
+
 
 ## 规则提供者设置---------------------------------------------------------------------------------------------------
 rule-providers-general: &rule-providers-general
@@ -348,11 +338,6 @@ rule-providers-general: &rule-providers-general
   interval: 86400
 
 rule-providers:
-  ♻️延迟最低-FISH:
-    <<: *rule-providers-general
-    url: https://raw.githubusercontent.com/refined-fish/clash_rule_fish/refs/heads/main/Ruleset/♻️延迟最低-FISH.yaml
-    path: ./providers/rule/rule-provider_♻️延迟最低-FISH.yaml
-
   🌐Direct-FISH:
     <<: *rule-providers-general
     url: https://raw.githubusercontent.com/refined-fish/clash_rule_fish/refs/heads/main/Ruleset/🌐Direct-FISH.yaml
@@ -362,88 +347,7 @@ rule-providers:
     <<: *rule-providers-general
     url: https://raw.githubusercontent.com/refined-fish/clash_rule_fish/refs/heads/main/Ruleset/Ⓜ️微软Copilot-FISH.yaml
     path: ./providers/rule/rule-provider_Ⓜ️微软Copilot-FISH.yaml
-
-  github:
-    <<: *rule-providers-general
-    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/classical/github.yaml
-    path: ./providers/rule/rule-provider_github.yaml
-
-  youtube:
-    <<: *rule-providers-general
-    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/classical/youtube.yaml
-    path: ./providers/rule/rule-provider_youtube_domain.yaml
-    
-  google:
-    <<: *rule-providers-general
-    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/classical/google.yaml
-    path: ./providers/rule/rule-provider_google_domain.yaml
-
-  google-gemini:
-    <<: *rule-providers-general
-    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/classical/google-gemini.yaml
-    path: ./providers/rule/rule-provider_google-gemini.yaml
-
-  speedtest:
-    <<: *rule-providers-general
-    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/classical/speedtest.yaml
-    path: ./providers/rule/rule-provider_speedtest.yaml
-
-  private:
-    <<: *rule-providers-general
-    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/classical/private.yaml
-    path: ./providers/rule/rule-provider_private.yaml
-
-  telegram:
-    <<: *rule-providers-general
-    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/classical/telegram.yaml
-    path: ./providers/rule/rule-provider_telegram.yaml
-
-  netflix:
-    <<: *rule-providers-general
-    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/classical/netflix.yaml
-    path: ./providers/rule/rule-provider_netflix.yaml
-
-  paypal:
-    <<: *rule-providers-general
-    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/classical/paypal.yaml
-    path: ./providers/rule/rule-provider_paypal.yaml
-
-  onedrive:
-    <<: *rule-providers-general
-    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/classical/onedrive.yaml
-    path: ./providers/rule/rule-provider_onedrive.yaml
-
-  microsoft:
-    <<: *rule-providers-general
-    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/classical/microsoft.yaml
-    path: ./providers/rule/rule-provider_microsoft.yaml
-
-  apple:
-    <<: *rule-providers-general
-    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/classical/apple-cn.yaml
-    path: ./providers/rule/rule-provider_apple.yaml
-
-  tiktok:
-    <<: *rule-providers-general
-    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/classical/tiktok.yaml
-    path: ./providers/rule/rule-provider_tiktok.yaml
-
-  cn:
-    <<: *rule-providers-general
-    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/classical/cn.yaml
-    path: ./providers/rule/rule-provider_cn.yaml
-
-  tencent:
-    <<: *rule-providers-general
-    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/classical/tencent.yaml
-    path: ./providers/rule/rule-provider_tencent.yaml
-
-  openai:
-    <<: *rule-providers-general
-    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/classical/openai.yaml
-    path: ./providers/rule/rule-provider_openai.yaml
-
-    
+   
   custom_rules:
     <<: *rule-providers-general
     url: https://raw.githubusercontent.com/Hotinosin/clash-rule/refs/heads/main/payload/custom_rules.yaml
@@ -464,26 +368,31 @@ rule-providers:
 rules:
   #### 对于必须直连者直接使用direct写死，其他尽可能使用代理组以方便面板控制以及切换测试
   # FISH自定义规则块
-  - RULE-SET,♻️延迟最低-FISH,✅默认代理 # FISH自定义代理
   - RULE-SET,🌐Direct-FISH,DIRECT # FISH自定义直连
   # Ho自定义规则块
   - RULE-SET,speedtest,✈️ Speedtest
-  - RULE-SET,private,DIRECT
   - RULE-SET,custom_direct,DIRECT
   - RULE-SET,custom_ddns,✅默认代理
-  - RULE-SET,tencent,DIRECT
   - RULE-SET,custom_rules,✅默认代理
+  - RULE-SET,tencent,DIRECT
+  - RULE-SET,tencent-game,DIRECT
   - RULE-SET,apple,DIRECT
+  - RULE-SET,onedrive,DIRECT
+  # 常见服务
   - RULE-SET,github,✅默认代理
   - RULE-SET,youtube,✅默认代理
   - RULE-SET,google,✅默认代理
-  - RULE-SET,onedrive,DIRECT
-  - RULE-SET,microsoft,DIRECT
   - RULE-SET,tiktok,✅默认代理
-  - RULE-SET,speedtest,DIRECT
-  - RULE-SET,telegram,✅默认代理
   - RULE-SET,netflix,✅默认代理
-  - RULE-SET,cn,DIRECT
+  # AI相关
+  - GEOSITE,openai,🅰️Ai # openai服务
+  - GEOSITE,google-gemini,🅰️Ai # gemini
+  - RULE-SET,Ⓜ️微软Copilot-FISH,🅰️Ai # 微软copilot服务
+
+  # 国际社交软件
+  - GEOSITE,telegram,国际社交软件 # Telegram服务
+  - GEOIP,telegram,国际社交软件,no-resolve # Telegram服务IP
+  - GEOSITE,x,✅默认代理 # 推特,x
 
   # 广告拦截与私有地址绕过块
   - GEOIP,private,DIRECT,no-resolve # 私有地址直连
@@ -495,23 +404,16 @@ rules:
   - GEOSITE,tracker,DIRECT # 必须直连，否则PT/BT直连代理下载
   - GEOSITE,category-pt,DIRECT # 必须直连，否则PT标记盒子
   - GEOSITE,tmdb,✅默认代理 # TMDB服务，影视刮削
+
   # 微软相关
   - GEOSITE,win-extra,Ⓜ️微软服务 # 微软附加隐私跟踪域名
   - GEOSITE,win-update,Ⓜ️微软服务 # 微软更新域名
-  - RULE-SET,Ⓜ️微软Copilot-FISH,Ⓜ️微软Copilot # 微软copilot服务
   - GEOSITE,synology,DIRECT # 群晖服务，包括QC
-    # AI相关
-  - GEOSITE,openai,🅰️Ai # openai服务
-  - GEOSITE,google-gemini,🅰️Ai # gemini
-  # telegram相关
-  - GEOSITE,telegram,✈️Telegram # Telegram服务
-  - GEOIP,telegram,✈️Telegram,no-resolve # Telegram服务IP
-  # 编程相关
+
+  # 编程-docker相关
   - GEOSITE,category-container,✅默认代理 # 各种容器服务
   - GEOSITE,python,✅默认代理 # Python服务，例如pip直连下载较慢
-  # 其他
-  - GEOSITE,bahamut,📺巴哈姆特 # 巴哈姆特服务
-  - GEOSITE,category-porn,✅默认代理 # X服务
+
 
   #### 兜底规则块，一般精细的分流规则应在其上
   - GEOSITE,gfw,🧱GFW # GFW兜底
