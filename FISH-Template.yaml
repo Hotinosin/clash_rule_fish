@@ -392,7 +392,8 @@ rules:
   # 国际社交软件
   - GEOSITE,telegram,国际社交软件 # Telegram服务
   - GEOIP,telegram,国际社交软件,no-resolve # Telegram服务IP
-  - GEOSITE,x,✅默认代理 # 推特,x
+  - GEOSITE,x,国际社交软件 # 推特,x
+  - GEOSITE,category-social-media-!cn,国际社交软件 # 国外社交软件
 
   # 广告拦截与私有地址绕过块
   - GEOIP,private,DIRECT,no-resolve # 私有地址直连
