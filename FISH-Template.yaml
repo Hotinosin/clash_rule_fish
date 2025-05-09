@@ -251,7 +251,7 @@ proxy-groups:
   - name: 🇸🇬🇨🇳新台优选
     type: url-test
     <<: *health-check-general
-    filter: "(?=.*(新加坡|台湾))^((?!(OneYuan|日|韩|深|美|倍)).)*$"
+    filter: "(?=.*(新加坡|TW))^((?!(OneYuan|日|韩|深|美|倍)).)*$"
 
   - name: ⚠️故障切换
     type: fallback
