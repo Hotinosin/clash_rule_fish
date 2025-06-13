@@ -92,14 +92,13 @@ dns:
   fake-ip-filter: # fakeip过滤，以下域名将使用redir-host模式，填入无需代理的内容
     - "rule-set:🌐Direct-FISH" # 个人收集直连域名，不能直接用GEOSITE引用的零散域名
     - "geosite:category-ads-all" # 广告域名
-    - "geosite:cn" # 中国域名
-    - "geosite:geolocation-cn" # 中国地区域名
-    - "geosite:private" # 私有地址，包括stun，lan等域名
+    - "geosite:cn" # cn可访问域名，为了兼容V2ray的cn标志，包括geolocation-cn和tld-cn
+    - "geosite:private" # 私有地址，包括stun，lan，路由器后台网址等域名
     - "geosite:apple" # 苹果域名
     - "geosite:win-extra" # 微软附加的隐私跟踪域名
     - "geosite:win-update" # 微软更新域名
     - "geosite:tailscale" # tailscale域名
-    - "geosite:tracker,category-pt" # PT/BT域名
+    - "geosite:tracker,category-pt" # BT/PT域名
     - "geosite:synology" # 群晖域名
     - "geosite:category-ntp" # NTP域名
   # redir-host配置段
@@ -338,15 +337,15 @@ rule-providers-general: &rule-providers-general
   interval: 86400
 
 rule-providers:
-  🌐Direct-FISH:
+  Direct-FISH:
     <<: *rule-providers-general
     url: https://raw.githubusercontent.com/refined-fish/clash_rule_fish/refs/heads/main/Ruleset/🌐Direct-FISH.yaml
-    path: ./providers/rule/rule-provider_🌐Direct-FISH.yaml
+    path: ./providers/rule/rule-provider_Direct-FISH.yaml
 
-  Ⓜ️微软Copilot-FISH:
+  微软Copilot-FISH:
     <<: *rule-providers-general
     url: https://raw.githubusercontent.com/refined-fish/clash_rule_fish/refs/heads/main/Ruleset/Ⓜ️微软Copilot-FISH.yaml
-    path: ./providers/rule/rule-provider_Ⓜ️微软Copilot-FISH.yaml
+    path: ./providers/rule/rule-provider_微软Copilot-FISH.yaml
    
   custom_rules:
     <<: *rule-providers-general
@@ -367,7 +366,7 @@ rule-providers:
 rules:
   #### 对于必须直连者直接使用direct写死，其他尽可能使用代理组以方便面板控制以及切换测试
   # FISH自定义规则块
-  - RULE-SET,🌐Direct-FISH,DIRECT # FISH自定义直连
+  - RULE-SET,Direct-FISH,DIRECT # FISH自定义直连
   # Ho自定义规则块
   - GEOSITE,speedtest,✈️ Speedtest
   - RULE-SET,custom_direct,DIRECT
@@ -388,7 +387,7 @@ rules:
   - GEOSITE,openai,🅰️Ai # openai服务
   - GEOSITE,google-gemini,🅰️Ai # gemini
   - GEOSITE,category-ai-!cn,🅰️Ai # 中国外AI
-  - RULE-SET,Ⓜ️微软Copilot-FISH,🅰️Ai # 微软copilot服务
+  - RULE-SET,微软Copilot-FISH,🅰️Ai # 微软copilot服务
 
   # 国际社交软件
   - GEOSITE,telegram,国际社交软件 # Telegram服务
