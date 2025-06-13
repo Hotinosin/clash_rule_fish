@@ -385,7 +385,7 @@ rules:
   - GEOSITE,apple,DIRECT
   - GEOSITE,onedrive,DIRECT
   - GEOSITE,bilibili,DIRECT
-  #  - GEOSITE,tencent-game,DIRECT
+  - GEOSITE,tencent-games,DIRECT
 
   # 常见服务
   - GEOSITE,github,✅默认代理
