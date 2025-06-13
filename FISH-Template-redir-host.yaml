@@ -92,7 +92,7 @@ dns:
     "rule-set:company_custom_crypto": *secure-dns # 匹配crypto
     "rule-set:company_custom_rules": *secure-dns # 匹配custom_rules
     "geosite:category-cryptocurrency": *secure-dns # 匹配crypto
-    "rule-set:🌐Direct-FISH": *public-dns # 匹配🌐Direct-FISH
+    "rule-set:FISH-Direct": *public-dns # 匹配FISH-Direct
     "geosite:cn,apple,private": *public-dns # 匹配中国，苹果域名，私有地址
     "geosite:geolocation-!cn": *secure-dns # 匹配非中国域名
   nameserver: *public-dns # 兜底默认DNS组，未命中 nameserver-policy 时启用
@@ -101,7 +101,7 @@ dns:
   #fake-ip-filter-mode: blacklist # 黑/白名单模式，白名单下 filter 会返回 fake-ip
   #fake-ip-filter: # fakeip过滤
   #- "geosite:category-ads-all,category-games,cn,private"
-  #- "rule-set:🌐Direct-FISH"
+  #- "rule-set:FISH-Direct"
   #default-nameserver: [223.5.5.5] # 解析DNS服务器域名的DNS，可以加密但必须为IP，如果不用DNS服务器的域名则无需配置
 
 ## hosts设置---------------------------------------------------------------------------------------------------
@@ -372,15 +372,20 @@ rule-providers-general: &rule-providers-general
   interval: 86400
 
 rule-providers:
-  🌐Direct-FISH:
+  FISH-延迟最低:
+    <<: *rule-providers-general
+    url: https://raw.githubusercontent.com/refined-fish/clash_rule_fish/refs/heads/main/Ruleset/♻️延迟最低-FISH.yaml
+    path: ./providers/rule/rule-provider_FISH-延迟最低.yaml
+
+  FISH-Direct:
     <<: *rule-providers-general
     url: https://raw.githubusercontent.com/refined-fish/clash_rule_fish/refs/heads/main/Ruleset/🌐Direct-FISH.yaml
-    path: ./providers/rule/rule-provider_🌐Direct-FISH.yaml
+    path: ./providers/rule/rule-provider_FISH-Direct.yaml
 
-  Ⓜ️微软Copilot-FISH:
+  FISH-Copilot:
     <<: *rule-providers-general
     url: https://raw.githubusercontent.com/refined-fish/clash_rule_fish/refs/heads/main/Ruleset/Ⓜ️微软Copilot-FISH.yaml
-    path: ./providers/rule/rule-provider_Ⓜ️微软Copilot-FISH.yaml
+    path: ./providers/rule/rule-provider_FISH-Copilot.yaml
 
   company_custom_okx:
     <<: *rule-providers-general
@@ -412,30 +417,36 @@ rule-providers:
 rules:
   #### 对于必须直连者直接使用direct写死，其他尽可能使用代理组以方便面板控制以及切换测试
   # FISH自定义规则块
-  - RULE-SET,🌐Direct-FISH,DIRECT # FISH自定义直连
-  # 自定义规则块
-  - GEOSITE,speedtest,✈️ Speedtest
-  - RULE-SET,company_custom_direct,DIRECT
+  - RULE-SET,FISH-Direct,DIRECT # FISH自定义直连
+  - RULE-SET,FISH-延迟最低,✅默认代理
+  - RULE-SET,FISH-Copilot,🅰️Ai # 微软copilot服务
+
+  # 公司规则
   - RULE-SET,company_custom_okx,🤖数据-OKX
   - RULE-SET,company_custom_api,🤖Crypto-API
   - RULE-SET,company_custom_crypto,💰Crypto
+  - RULE-SET,company_custom_direct,DIRECT
   - RULE-SET,company_custom_rules,✅默认代理
+
+  # 常见国内
+  - GEOSITE,speedtest,✈️ Speedtest
   - GEOSITE,tencent,DIRECT
-#  - GEOSITE,tencent-game,DIRECT
+  - GEOSITE,tencent-games,DIRECT
   - GEOSITE,apple,DIRECT
   - GEOSITE,onedrive,DIRECT
   - GEOSITE,bilibili,DIRECT
-  # 常见服务
+
+  # 常见外网服务
   - GEOSITE,github,✅默认代理
   - GEOSITE,youtube,✅默认代理
   - GEOSITE,google,✅默认代理
   - GEOSITE,tiktok,✅默认代理
   - GEOSITE,netflix,✅默认代理
+
   # AI相关
   - GEOSITE,openai,🅰️Ai # openai服务
   - GEOSITE,category-ai-chat-!cn,🅰️Ai # 不在大陆的AI
   - GEOSITE,google-gemini,🅰️Ai # gemini
-  - RULE-SET,Ⓜ️微软Copilot-FISH,🅰️Ai # 微软copilot服务
 
   # 国际社交软件
   - GEOSITE,telegram,国际社交软件 # Telegram服务

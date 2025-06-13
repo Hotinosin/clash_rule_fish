@@ -90,7 +90,7 @@ dns:
   fake-ip-range: 198.18.0.1/16 #🔴fakeip 的 IP 段，tun接口的默认 IPV4 地址 也使用此值作为参考
   fake-ip-filter-mode: blacklist # 黑/白名单模式，黑名单下，filter内容将使用redir-host模式解析
   fake-ip-filter: # fakeip过滤，以下域名将使用redir-host模式，填入无需代理的内容
-    - "rule-set:🌐Direct-FISH" # 个人收集直连域名，不能直接用GEOSITE引用的零散域名
+    - "rule-set:FISH-Direct" # 个人收集直连域名，不能直接用GEOSITE引用的零散域名
     - "geosite:category-ads-all" # 广告域名
     - "geosite:cn" # cn可访问域名，为了兼容V2ray的cn标志，包括geolocation-cn和tld-cn
     - "geosite:private" # 私有地址，包括stun，lan，路由器后台网址等域名
@@ -376,18 +376,21 @@ rules:
   - RULE-SET,FISH-延迟最低,✅默认代理
   - RULE-SET,FISH-Copilot,🅰️Ai # 微软copilot服务
 
+
   # Ho自定义规则块
-  - GEOSITE,speedtest,✈️ Speedtest
   - RULE-SET,custom_direct,DIRECT
   - RULE-SET,custom_ddns,✅默认代理
   - RULE-SET,custom_rules,✅默认代理
+
+  # 常见国内
+  - GEOSITE,speedtest,✈️ Speedtest
   - GEOSITE,tencent,DIRECT
+  - GEOSITE,tencent-games,DIRECT
   - GEOSITE,apple,DIRECT
   - GEOSITE,onedrive,DIRECT
   - GEOSITE,bilibili,DIRECT
-  - GEOSITE,tencent-games,DIRECT
 
-  # 常见服务
+  # 常见外网服务
   - GEOSITE,github,✅默认代理
   - GEOSITE,youtube,✅默认代理
   - GEOSITE,google,✅默认代理
