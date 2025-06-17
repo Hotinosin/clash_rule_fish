@@ -32,7 +32,7 @@ profile: # 缓存设置
 #routing-mark: 6666  # 非linux无效，路由标记，为流量提供标记以供其他应用进行流量处理
 
 ## TCP-KeepA-live配置 ------------------------------------------------------------------------------------------
-keep-alive-idle: 30 # 触发心跳包的链路无活动阈值，无活动后发送心跳包检测对端是否存活
+keep-alive-idle: 50 # 触发心跳包的链路无活动阈值，无活动后发送心跳包检测对端是否存活
 keep-alive-interval: 30 # 发送心跳包的间隔，无回应则最多重发9次后判断链路关闭
 disable-keep-alive: false # 禁用 keep alive，即允许长链接一直存在
 
@@ -126,6 +126,7 @@ sniffer: # 嗅探，获取SNI中的域名，使mihomo能够反解未经自己DNS
       ports: # 端口白名单，只针对下列端口嗅探
         - 443
         - 8443
+        - 9443
     HTTP: # HTTP协议
       ports: # 端口白名单，只针对下列端口嗅探
         - 80
@@ -139,6 +140,9 @@ sniffer: # 嗅探，获取SNI中的域名，使mihomo能够反解未经自己DNS
     - "+.nflxvideo.net"
     - "+.amazonaws.com"
     - "+.media.dssott.com"
+    - "+.aicoin.com"
+    - "+.binance.com"
+    - "+.okx.com"
   skip-domain: # 需要跳过嗅探的域名，主要解决部分站点sni字段非域名，导致嗅探结果异常的问题，如米家设备
     - "+.apple.com"
     - Mijia Cloud
@@ -180,6 +184,7 @@ tun:
   #strict-route: false # 严格路由，添加防火墙规则禁止Windows使用多DNS，有效防止DNS泄露，实测严重拖慢Windows访问速度
   #endpoint-independent-nat: false # 独立于端点的 NAT，性能可能下降，不建议不需要时开启
 
+
 ## 代理提供者设置---------------------------------------------------------------------------------------------------
 proxy-providers-general: &proxy-providers-general # 代理提供者通用配置
   type: http # 类型，可选http/file/inline
@@ -195,31 +200,41 @@ proxy-providers-general: &proxy-providers-general # 代理提供者通用配置
     skip-cert-verify: true# 跳过证书验证
     #down: "50 Mbps" # 下行限速
     #up: "10 Mbps" # 上行限速
-    ip-version: dual # 可选dual/ipv4/ipv6/ipv4-prefer/ipv6-prefer，即优先v4或v6，仅v4或v6
-    
+    ip-version: ipv4 # 可选dual/ipv4/ipv6/ipv4-prefer/ipv6-prefer，即优先v4或v6，仅v4或v6
+
 proxy-providers:
-  #❗provider占位1
-  #❗provider占位2
-  #❗provider占位3
-  #❗provider占位4
+  Gatern:
+    <<: *proxy-providers-general
+    proxy:  ✅默认代理
+    override:
+      additional-prefix: "Gatern-"
+    url: "https://sub.grempt.com/link/30624/mMlKBvHnqyJq"
+    path: ./providers/proxy-provider1.yaml
+
+  FNF:
+    <<: *proxy-providers-general
+    override:
+      additional-prefix: "FNF-"
+    proxy:  ✅默认代理
+    url: "https://subs.foonfriends.xyz/link/pzhudAmBCHm34rw1?cl=1"
+    path: ./providers/proxy-fnf.yaml
+
 
 ## 代理组设置---------------------------------------------------------------------------------------------------
 use-all-proxy-providers: &use-all-proxy-providers # 代理组通用配置
   use:
-    #❗use-provider占位1
-    #❗use-provider占位2
-    #❗use-provider占位3
-    #❗use-provider占位4
+    - Gatern
+    - FNF
 
 health-check-general: &health-check-general # 代理组健康检查通用配置
   <<: *use-all-proxy-providers
   url: http://www.gstatic.com/generate_204
-  interval: 60 # 健康检查间隔
+  interval: 30 # 健康检查间隔
   tolerance: 80 # 延迟容忍度，单位ms
   lazy: true # 未选中当前组时不进行测试
   timeout: 5000 # 健康检查超时，单位ms
   max-failed-times: 5 # 失败次数，超过则执行一次强制健康检查
-  filter: "^(?!.*(ink|看这里|到期|机场|地址|流量|订阅|计费|日本)).*$"
+  filter: "^(?!.*(到期|机场|地址|流量|订阅|计费|日本)).*$"
 
 default-proxy: &default-proxy # 默认代理组
   proxies:
@@ -250,7 +265,7 @@ proxy-groups:
   - name: 🇸🇬🇨🇳新台优选
     type: url-test
     <<: *health-check-general
-    filter: "(?=.*(新加坡|台湾))^((?!(OneYuan|日|韩|深|美|倍)).)*$"
+    filter: "(?=.*(新加坡|台湾))^((?!(Gatern|日|韩|深|美|倍)).)*$"
 
   - name: ⚠️故障切换
     type: fallback
@@ -260,8 +275,9 @@ proxy-groups:
   - name: 🖐️手动切换
     type: select
     <<: *use-all-proxy-providers
-    filter: "(?=.*(香港|新加坡|台湾|美国|))^((?!(OneYuan|日|韩|深|美|倍)).)*$"
+    filter: "(?=.*(香港|新加坡|台湾|美国|))^((?!(日|韩|深|美|倍)).)*$"
 
+ 
   ##################################
   - name: ✅默认代理
     type: select
@@ -301,25 +317,82 @@ proxy-groups:
     <<: *default-proxy
 
   ##################################
+
+  - name: 💰Crypto
+    type: select
+    proxies:
+      - 🇸🇬🇨🇳新台优选
+      - ⚠️故障切换
+      - 🖐️手动切换
+      - 🇭🇰香港节点
+      - 🇨🇳台湾节点
+      - 🇸🇬狮城节点
+
+ # - name: 🤖Crypto-API
+ #   type: load-balance
+#    strategy: round-robin
+#    url: 'https://www.gstatic.com/generate_204'
+#    interval: 300
+#    proxies:
+#      - 🇸🇬🇨🇳新台优选
+#      - 🇭🇰香港节点
+#      - 🇨🇳台湾节点
+#      - 🇸🇬狮城节点
+
+  - name: 🤖Crypto-API
+    type: select
+    proxies:
+      - 🤖数据专用-自动测速
+      - 🤖数据专用-手动选择
+      - ⚠️故障切换
+
+  - name: 🤖数据专用-自动测速
+    type: url-test
+    <<: *health-check-general
+    url: http://www.gstatic.com/generate_204
+    interval: 30 # 健康检查间隔
+    tolerance: 100 # 延迟容忍度，单位ms
+    timeout: 5000 # 健康检查超时，单位ms
+    filter: "(?=.*(新加坡|台湾))^((?!(FNF|日|韩|深|美|倍)).)*$"
+
+  - name: 🤖数据专用-手动选择
+    type: select
+    <<: *health-check-general
+    filter: "(?=.*(新加坡|台湾))^((?!(FNF|日|韩|深|美|倍)).)*$"
+
+  - name: 🤖数据-OKX
+    type: select
+    proxies:
+      - 🇺🇲美国节点
+      - 🇸🇬🇨🇳新台优选
+      - ⚠️故障切换
+      - 🖐️手动切换
+      - 🇭🇰香港节点
+      - 🇨🇳台湾节点
+      - 🇸🇬狮城节点
+      - 🤖数据专用-自动测速
+      - 🤖数据专用-手动选择
+
+
   - name: 🇭🇰香港节点
     type: url-test
     <<: *health-check-general
-    filter: "(?=.*(港|HK|hk|Hong Kong|HongKong|hongkong|(?i)Hong))^((?!(台|日|韩|新|深|美|倍)).)*$"
+    filter: "(?=.*(港|HK|hk|Hong Kong|HongKong|hongkong|(?i)Hong))^((?!(Gatern|台|日|韩|新|深|美|倍)).)*$"
 
   - name: 🇨🇳台湾节点
     type: url-test
     <<: *health-check-general
-    filter: "(?=.*(台|新北|彰化|TW|Taiwan))^((?!(港|美|日|韩|新|倍)).)*$"
+    filter: "(?=.*(台|新北|彰化|TW|Taiwan))^((?!(Gatern|港|美|日|韩|新|倍)).)*$"
 
   - name: 🇸🇬狮城节点
     type: url-test
     <<: *health-check-general
-    filter: "(?=.*(新加坡|SG|(?i)Singapore))^((?!(港|台|韩|日|美|倍)).)*$"
+    filter: "(?=.*(新加坡|SG|(?i)Singapore))^((?!(Gatern|港|台|韩|日|美|倍)).)*$"
 
   - name: 🇺🇲美国节点
     type: url-test
     <<: *health-check-general
-    filter: "(?=.*(美|US|(?i)States|America))^((?!(港|台|日|韩|新|倍)).)*$"
+    filter: "(?=.*(美|US|(?i)States|America))^((?!(Gatern|港|台|日|韩|新|倍)).)*$"
 
   - name: 🌐默认直连
     type: select
@@ -352,35 +425,42 @@ rule-providers:
     url: https://raw.githubusercontent.com/refined-fish/clash_rule_fish/refs/heads/main/Ruleset/Ⓜ️微软Copilot-FISH.yaml
     path: ./providers/rule/rule-provider_FISH-Copilot.yaml
 
+  company_custom_okx:
+    <<: *rule-providers-general
+    url: https://raw.githubusercontent.com/Hotinosin/clash-rule/refs/heads/main/payload/company_custom_okx.yaml
+    path: ./providers/rule/rule-provider_company_custom_okx.yaml
    
-  custom_rules:
+  company_custom_api:
     <<: *rule-providers-general
-    url: https://raw.githubusercontent.com/Hotinosin/clash-rule/refs/heads/main/payload/custom_rules.yaml
-    path: ./providers/rule/rule-provider_custom_rules.yaml
+    url: https://raw.githubusercontent.com/Hotinosin/clash-rule/refs/heads/main/payload/company_custom_api.yaml
+    path: ./providers/rule/rule-provider_company_custom_api.yaml
+
+  company_custom_crypto:
+    <<: *rule-providers-general
+    url: https://raw.githubusercontent.com/Hotinosin/clash-rule/refs/heads/main/payload/company_custom_crypto.yaml
+    path: ./providers/rule/rule-provider_payload/company_custom_crypto.yaml
     
-  custom_direct:
+  company_custom_direct:
     <<: *rule-providers-general
-    url: https://raw.githubusercontent.com/Hotinosin/clash-rule/refs/heads/main/payload/custom_direct.yaml
-    path: ./providers/rule/rule-provider_custom_direct.yaml
+    url: https://raw.githubusercontent.com/Hotinosin/clash-rule/refs/heads/main/payload/company_custom_direct.yaml
+    path: ./providers/rule/rule-provider_company_custom_direct.yaml
     
-  custom_ddns:
+  company_custom_rules:
     <<: *rule-providers-general
-    url: https://raw.githubusercontent.com/Hotinosin/clash-rule/refs/heads/main/payload/custom_ddns.yaml
-    path: ./providers/rule/rule-provider_custom_ddns.yaml
+    url: https://raw.githubusercontent.com/Hotinosin/clash-rule/refs/heads/main/payload/company_custom_rules.yaml
+    path: ./providers/rule/rule-provider_company_custom_rules.yaml
+
 
 ## 路由规则设置---------------------------------------------------------------------------------------------------
 rules:
   #### 对于必须直连者直接使用direct写死，其他尽可能使用代理组以方便面板控制以及切换测试
-  # FISH自定义规则块
-  - RULE-SET,FISH-Direct,DIRECT # FISH自定义直连
-  - RULE-SET,FISH-延迟最低,✅默认代理
-  - RULE-SET,FISH-Copilot,🅰️Ai # 微软copilot服务
 
-
-  # Ho自定义规则块
-  - RULE-SET,custom_direct,DIRECT
-  - RULE-SET,custom_ddns,✅默认代理
-  - RULE-SET,custom_rules,✅默认代理
+  # 公司自定义规则块
+  - RULE-SET,company_custom_direct,DIRECT
+  - RULE-SET,company_custom_okx,🤖数据-OKX
+  - RULE-SET,company_custom_api,🤖Crypto-API
+  - RULE-SET,company_custom_crypto,💰Crypto
+  - RULE-SET,company_custom_rules,✅默认代理
 
   # 常见国内
   - GEOSITE,speedtest,✈️ Speedtest
@@ -389,6 +469,11 @@ rules:
   - GEOSITE,apple,DIRECT
   - GEOSITE,onedrive,DIRECT
   - GEOSITE,bilibili,DIRECT
+
+  # FISH自定义规则块
+  - RULE-SET,FISH-Direct,DIRECT # FISH自定义直连
+  - RULE-SET,FISH-延迟最低,✅默认代理
+  - RULE-SET,FISH-Copilot,🅰️Ai # 微软copilot服务
 
   # 常见外网服务
   - GEOSITE,github,✅默认代理
