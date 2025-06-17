@@ -70,7 +70,7 @@ geox-url: # GEO数据库下载地址，内核会按需下载，未被使用的�
 
 public-dns: &public-dns # 快速的DNS，不关心是否存在污染和劫持，只要快就好了
   - dhcp://wan # 指定网卡DHCP获取的DNS，硬路由的wan口网卡名一般为wan
-  - dhcp://eth1 # 软路由的wan口一般为最后一张网卡，eth0,eth1 双网口就是eth1
+#  - dhcp://eth1 # 软路由的wan口一般为最后一张网卡，eth0,eth1 双网口就是eth1
   - 119.29.29.29 # 阿里主DNS
 
 secure-dns: &secure-dns # 加密的DNS，必须避免被解析为0.0.0.0等污染
