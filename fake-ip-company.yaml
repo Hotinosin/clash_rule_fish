@@ -74,7 +74,9 @@ public-dns: &public-dns # 快速的DNS，不关心是否存在污染和劫持，
   - 119.29.29.29 # 阿里主DNS
 
 secure-dns: &secure-dns # 加密的DNS，必须避免被解析为0.0.0.0等污染
-  - https://223.5.5.5/dns-query#h3=true # 阿里主DNS，支持H3
+  - https://8.8.8.8/dns-query # 谷歌DNS
+#  - https://dns.google/dns-query #谷歌dns
+#  - https://223.5.5.5/dns-query#h3=true # 阿里主DNS，支持H3
 
 dns:
   enable: true #🔴启用dns模块，否则采用系统DNS
@@ -91,23 +93,25 @@ dns:
   fake-ip-filter-mode: blacklist # 黑/白名单模式，黑名单下，filter内容将使用redir-host模式解析
   fake-ip-filter: # fakeip过滤，以下域名将使用redir-host模式，填入无需代理的内容
     - "rule-set:FISH-Direct" # 个人收集直连域名，不能直接用GEOSITE引用的零散域名
-    - "geosite:category-ads-all" # 广告域名
     - "geosite:cn" # cn可访问域名，为了兼容V2ray的cn标志，包括geolocation-cn和tld-cn
     - "geosite:private" # 私有地址，包括stun，lan，路由器后台网址等域名
     - "geosite:apple" # 苹果域名
     - "geosite:win-extra" # 微软附加的隐私跟踪域名
     - "geosite:win-update" # 微软更新域名
-    - "geosite:tailscale" # tailscale域名
-    - "geosite:tracker,category-pt" # BT/PT域名
+    # - "geosite:category-ads-all" # 广告域名
+    # - "geosite:tailscale" # tailscale域名
+    # - "geosite:tracker,category-pt" # BT/PT域名
     - "geosite:synology" # 群晖域名
     - "geosite:category-ntp" # NTP域名
+    - "+.lan"
+    - "+.local"
   # redir-host配置段
   default-nameserver: *secure-dns # 解析DNS服务器域名的DNS，可以加密但必须为IP，如果不用DNS服务器的域名则无需配置
   proxy-server-nameserver: *secure-dns # 解析代理节点域名的DNS，不填则遵循namepolicy
   direct-nameserver: *public-dns # 解析direct组的DNS，不填则遵循namepolicy
   #direct-nameserver-follow-policy: false # direct代理组是否遵循nameserver-policy，false则直接使用direct-nameserver
   nameserver-policy: # 优先级高于nameserver
-    "geosite:category-ads-all": rcode://success # 匹配广告域名，返回空结果
+    # "geosite:category-ads-all": rcode://success # 匹配广告域名，返回空结果
   nameserver: *public-dns # 兜底默认DNS组，未命中 nameserver-policy 时启用
   # fallback: # 过时的配置，已被 nameserver-policy 取代，使用时会产生DNS泄露
 
