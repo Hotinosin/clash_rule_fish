@@ -65,16 +65,21 @@ geox-url: # GEO数据库下载地址，内核会按需下载，未被使用的�
 # 综上所述，配置DNS没有那么重要，只要保证首次解析不要得到0.0.0.0这样的错误IP即可
 
 public-dns: &public-dns # 快速的DNS，不关心是否存在污染和劫持，只要快就好了
-  - dhcp://wan # 指定网卡DHCP获取的DNS，硬路由的wan口网卡名一般为wan
+#  - dhcp://wan # 指定网卡DHCP获取的DNS，硬路由的wan口网卡名一般为wan
 #  - dhcp://eth3 # 软路由的wan口一般为最后一张网卡，eth0,eth1 双网口就是eth1
-  - 119.29.29.29 # 腾讯DNS
+#  - 233.5.5.5 # 阿里DNS
+  - 114.114.114.114 # 阿里DNS
+  - 114.114.115.115
 
 secure-dns: &secure-dns # 加密的DNS，必须避免被解析为0.0.0.0等污染
-  # - https://8.8.8.8/dns-query # 谷歌DNS
+#  - 1.1.1.1
+#  - https://8.8.8.8/dns-query # 谷歌DNS
+  - https://1.1.1.1/dns-query
   - https://223.5.5.5/dns-query#h3=true # 阿里主DNS，支持H3
 
 crypto-dns: &crypto-dns # 加密的DNS，必须避免被解析为0.0.0.0等污染
-  - https://8.8.8.8/dns-query # 谷歌DNS
+#  - https://1.1.1.1/dns-query
+  - 1.1.1.1
 #  - https://dns.google/dns-query # 谷歌DNS
 #  - https://cloudflare-dns.com/dns-query # CloudflareDNS
 
@@ -84,13 +89,13 @@ dns:
   listen: 0.0.0.0:1053 #🔴DNS监听端口，仅支持udp
   enhanced-mode: redir-host #🔴DNS处理模式：redir-host/fake-ip，fake-ip更快但可能引入问题（缓存fakeip后无法故障切换）
   prefer-h3: false # DoH若支持则优先使用HTTP/3
-  ipv6: true # 是否解析ipv6地址，否则返回空结果
+  ipv6: false # 是否解析ipv6地址，否则返回空结果
   use-hosts: true # 查询配置文件中的 hosts
   use-system-hosts: true # 查询系统的 hosts
   proxy-server-nameserver: *secure-dns # 解析代理节点域名的DNS，不填则遵循namepolicy
   direct-nameserver: *public-dns # 解析direct组的DNS，不填则遵循namepolicy
   nameserver-policy: # 优先级高于nameserver
-    "geosite:category-ads-all": rcode://success # 匹配广告域名，返回空结果
+    # "geosite:category-ads-all": rcode://success # 匹配广告域名，返回空结果
     "rule-set:company_custom_okx": *crypto-dns # 匹配okx
     "rule-set:company_custom_api": *secure-dns # 匹配crypto
     "rule-set:company_custom_crypto": *secure-dns # 匹配crypto
@@ -106,7 +111,7 @@ dns:
   #fake-ip-filter: # fakeip过滤
   #- "geosite:category-ads-all,category-games,cn,private"
   #- "rule-set:FISH-Direct"
-  default-nameserver: [119.29.29.29] # 解析DNS服务器域名的DNS，可以加密但必须为IP，如果不用DNS服务器的域名则无需配置
+  # default-nameserver: [114.114.114.114] # 解析DNS服务器域名的DNS，可以加密但必须为IP，如果不用DNS服务器的域名则无需配置
 
 ## hosts设置---------------------------------------------------------------------------------------------------
 hosts:
@@ -150,7 +155,7 @@ sniffer: # 嗅探，获取SNI中的域名，使mihomo能够反解未经自己DNS
 
 ## tun设置---------------------------------------------------------------------------------------------------
 tun:
-  enable: true #🔴启用Tun接口
+  enable: false #🔴启用Tun接口
   stack: mixed # TUN 堆栈模式,建议 mixed（TCP：system，UDP：Gvisor）
   device: utun0 # TUN 网卡名，MacOS 只能 utun 开头
   auto-route: true # 自动设置全局路由，自动将全局流量路由进 tun
@@ -186,12 +191,13 @@ proxy-providers-general: &proxy-providers-general # 代理提供者通用配置
   proxy: DIRECT # http类型更新时使用的代理组，不建议设置代理，如果你的机场需要代理才能订阅，那先有鸡还是先有蛋？
   size-limit: 0 # 文件大小限制，0为不限制
 #  exclude-filter: "(?i)官网|每月刷新订阅|机场|到期|https://|剩余流量"
+
   override:
     tfo: false # 启用TCP Fast Open，一般都不支持
     mptcp: false # 启用TCP Multi Path，一般都不支持
     udp: true # 启用UDP
     udp-over-tcp: false # 启用UDP over TCP
-    skip-cert-verify: false # 跳过证书验证
+    skip-cert-verify: true # 跳过证书验证
 
 proxy-providers:
   #❗provider占位1
@@ -215,18 +221,20 @@ health-check-general: &health-check-general # 代理组健康检查通用配置
   lazy: true # 未选中当前组时不进行测试
   timeout: 5000 # 健康检查超时，单位ms
   max-failed-times: 5 # 失败次数，超过则执行一次强制健康检查
-  # filter: "^(?!.*(ink|看这里|到期|机场|地址|流量|订阅|计费|日本)).*$"
+  filter: "^(?!.*(ink|看这里|到期|机场|地址|流量|订阅|计费|日本)).*$"
 
 default-proxy: &default-proxy # 默认代理组
   proxies:
     - ✅默认代理
-    - 🇸🇬🇨🇳新台优选
     - ⚠️故障切换
+    - ⚠️TW-故障切换
     - 🖐️手动切换
     - 🇭🇰香港节点
     - 🇨🇳台湾节点
+    - 🇨🇳Akilo-TW
     - 🇸🇬狮城节点
     - 🇺🇲美国节点
+    - 🇸🇬🇨🇳新台优选
     - DIRECT
 
 default-direct: &default-direct # 默认直连组
@@ -235,41 +243,110 @@ default-direct: &default-direct # 默认直连组
     - ✅默认代理
 
 proxy-groups:
-  ##################################
+ ##################################
+  - name: ✅默认代理
+    type: select
+    proxies:
+      - ⚠️故障切换
+      - ⚠️TW-故障切换
+      - 🇸🇬🇨🇳新台优选
+      - 🇭🇰香港节点
+      - 🇨🇳台湾节点
+      - 🇨🇳Akilo-TW
+      - 🇸🇬狮城节点
+      - 🇺🇲美国节点
+      - 🖐️手动切换
+      - DIRECT
+
+  - name: ⚠️故障切换
+    type: fallback
+    proxies:
+      - ⚠️TW-故障切换
+      - 🇭🇰香港节点
+      - 🇸🇬狮城节点
+      - 🖐️手动切换
+
+  - name: ⚠️TW-故障切换
+    type: fallback
+    proxies:
+      - 🇨🇳Akilo-TW
+      - 🇨🇳台湾节点
+
+  - name: 🖐️手动切换
+    type: select
+    <<: *use-all-proxy-providers
+    filter: "(?=.*(香港|新加坡|台湾|美国))^((?!(中国|备用|到期|机场|地址|流量|订阅|计费)).)*$"
+
+  - name: 🅰️Ai
+    type: select
+    <<: *default-proxy
+
+  - name: 💰Crypto
+    type: select
+    proxies:
+      - ⚠️TW-故障切换
+      - 🤖数据专用-自动测速
+      - 🤖数据专用-手动选择
+      - ✅默认代理
+
+ # - name: 🤖Crypto-API
+ #   type: load-balance
+#    strategy: round-robin
+#    url: 'https://www.gstatic.com/generate_204'
+#    interval: 300
+#    proxies:
+#      - 🇸🇬🇨🇳新台优选
+#      - 🇭🇰香港节点
+#      - 🇨🇳台湾节点
+#      - 🇸🇬狮城节点
+
+  - name: 🤖Crypto-API
+    type: select
+    proxies:
+      - ⚠️TW-故障切换
+      - 🤖数据专用-自动测速
+      - 🤖数据专用-手动选择
+      - ✅默认代理
+
+  - name: 🤖数据专用-自动测速
+    type: url-test
+    <<: *health-check-general
+    filter: "(?=.*(TW|台湾))^((?!(FNF|日|韩|深|美|倍)).)*$"
+
+  - name: 🤖数据专用-手动选择
+    type: select
+    <<: *health-check-general
+    filter: "(?=.*(TW|台湾))^((?!(日|韩|深|美|倍)).)*$"
+
   - name: 🇸🇬🇨🇳新台优选
     type: url-test
     <<: *health-check-general
     filter: "(?=.*(新加坡|台湾))^((?!(Gatern|日|韩|深|美|倍)).)*$"
 
-  - name: ⚠️故障切换
-    type: fallback
+  - name: 🇭🇰香港节点
+    type: url-test
     <<: *health-check-general
-    filter: "(?=.*(新加坡|台湾|Gatern-台湾|Gatern-新加坡))^((?!(日|韩|深|美|倍)).)*$"
+    filter: "(?=.*(港|HK|hk|Hong Kong|HongKong|hongkong|(?i)Hong))^((?!(Gatern|台|日|韩|新|深|美|倍)).)*$"
 
-  - name: 🖐️手动切换
-    type: select
-    <<: *use-all-proxy-providers
-    filter: "(?=.*(香港|新加坡|台湾|美国|))^((?!(日|韩|深|美|倍)).)*$"
-  ##################################
-  - name: ✅默认代理
-    type: select
-    proxies:
-      - 🇸🇬🇨🇳新台优选
-      - ⚠️故障切换
-      - 🖐️手动切换
-      - 🇭🇰香港节点
-      - 🇨🇳台湾节点
-      - 🇸🇬狮城节点
-      - 🇺🇲美国节点
-      - DIRECT
-  ##################################
-  - name: 🅰️Ai
-    type: select
-    <<: *default-proxy
+  - name: 🇨🇳台湾节点
+    type: url-test
+    <<: *health-check-general
+    filter: "(?=.*(台|新北|彰化|TW|Taiwan))^((?!(Akilo|港|美|日|韩|新|倍)).)*$"
 
-  - name: 国际社交软件
-    type: select
-    <<: *default-proxy
+  - name: 🇨🇳Akilo-TW
+    type: url-test
+    <<: *health-check-general
+    filter: "(?=.*(台|新北|彰化|TW|Taiwan))^((?!(FNF|港|美|日|韩|新|倍)).)*$"
+
+  - name: 🇸🇬狮城节点
+    type: url-test
+    <<: *health-check-general
+    filter: "(?=.*(新加坡|SG|(?i)Singapore))^((?!(VQ|Gatern|港|台|韩|日|美|倍)).)*$"
+
+  - name: 🇺🇲美国节点
+    type: url-test
+    <<: *health-check-general
+    filter: "(?=.*(美|US|(?i)States|America))^((?!(Gatern|港|台|日|韩|新|倍)).)*$"
 
   - name: 🧱GFW
     type: select
@@ -283,83 +360,13 @@ proxy-groups:
     type: select
     <<: *default-direct
 
-  - name: ✈️ Speedtest
+  - name: 📱国际社交软件
     type: select
     <<: *default-proxy
 
-  ##################################
-
-  - name: 💰Crypto
+  - name: ✈️ Speedtest
     type: select
-    proxies:
-      - 🇸🇬🇨🇳新台优选
-      - ⚠️故障切换
-      - 🖐️手动切换
-      - 🇭🇰香港节点
-      - 🇨🇳台湾节点
-      - 🇸🇬狮城节点
-
-#  - name: 🤖Crypto-API
-#    type: load-balance
-#    strategy: round-robin
-#    url: 'https://www.gstatic.com/generate_204'
-#    interval: 300
-#    proxies:
-#      - 🇸🇬🇨🇳新台优选
-#      - 🇭🇰香港节点
-#      - 🇨🇳台湾节点
-#      - 🇸🇬狮城节点
-
-  - name: 🤖Crypto-API
-    type: select
-    proxies:
-      - 🤖数据专用-自动测速
-      - 🤖数据专用-手动选择
-      - ⚠️故障切换
-
-  - name: 🤖数据专用-自动测速
-    type: url-test
-    <<: *health-check-general
-    filter: "(?=.*(新加坡|台湾))^((?!(FNF|日|韩|深|美|倍)).)*$"
-
-  - name: 🤖数据专用-手动选择
-    type: select
-    <<: *health-check-general
-    filter: "(?=.*(新加坡|台湾))^((?!(FNF|日|韩|深|美|倍)).)*$"
-
-  - name: 🤖数据-OKX
-    type: select
-    proxies:
-      - 🇺🇲美国节点
-      - 🇸🇬🇨🇳新台优选
-      - ⚠️故障切换
-      - 🖐️手动切换
-      - 🇭🇰香港节点
-      - 🇨🇳台湾节点
-      - 🇸🇬狮城节点
-      - 🤖数据专用-自动测速
-      - 🤖数据专用-手动选择
-
-
-  - name: 🇭🇰香港节点
-    type: url-test
-    <<: *health-check-general
-    filter: "(?=.*(港|HK|hk|Hong Kong|HongKong|hongkong|(?i)Hong))^((?!(Gatern|台|日|韩|新|深|美|倍)).)*$"
-
-  - name: 🇨🇳台湾节点
-    type: url-test
-    <<: *health-check-general
-    filter: "(?=.*(台|新北|彰化|TW|Taiwan))^((?!(Gatern|港|美|日|韩|新|倍)).)*$"
-
-  - name: 🇸🇬狮城节点
-    type: url-test
-    <<: *health-check-general
-    filter: "(?=.*(新加坡|SG|(?i)Singapore))^((?!(VQ|Gatern|港|台|韩|日|美|倍)).)*$"
-
-  - name: 🇺🇲美国节点
-    type: url-test
-    <<: *health-check-general
-    filter: "(?=.*(美|US|(?i)States|America))^((?!(Gatern|港|台|日|韩|新|倍)).)*$"
+    <<: *default-proxy
 
   - name: 🌐默认直连
     type: select
@@ -421,16 +428,12 @@ rule-providers:
 ## 路由规则设置---------------------------------------------------------------------------------------------------
 rules:
   #### 对于必须直连者直接使用direct写死，其他尽可能使用代理组以方便面板控制以及切换测试
-  # FISH自定义规则块
-  - RULE-SET,FISH-Direct,DIRECT # FISH自定义直连
-  - RULE-SET,FISH-延迟最低,✅默认代理
-  - RULE-SET,FISH-Copilot,🅰️Ai # 微软copilot服务
 
-  # 公司规则
-  - RULE-SET,company_custom_okx,🤖数据-OKX
-  - RULE-SET,company_custom_api,🤖Crypto-API
-  - RULE-SET,company_custom_crypto,💰Crypto
+  # 公司自定义规则块
   - RULE-SET,company_custom_direct,DIRECT
+  - RULE-SET,company_custom_okx,💰Crypto
+  - RULE-SET,company_custom_crypto,💰Crypto
+  - RULE-SET,company_custom_api,🤖Crypto-API
   - RULE-SET,company_custom_rules,✅默认代理
 
   # 常见国内
@@ -441,6 +444,11 @@ rules:
   - GEOSITE,onedrive,DIRECT
   - GEOSITE,bilibili,DIRECT
 
+  # FISH自定义规则块
+  - RULE-SET,FISH-Direct,DIRECT # FISH自定义直连
+  - RULE-SET,FISH-延迟最低,✅默认代理
+  - RULE-SET,FISH-Copilot,🅰️Ai # 微软copilot服务
+
   # 常见外网服务
   - GEOSITE,github,✅默认代理
   - GEOSITE,youtube,✅默认代理
@@ -450,14 +458,14 @@ rules:
 
   # AI相关
   - GEOSITE,openai,🅰️Ai # openai服务
-  - GEOSITE,category-ai-chat-!cn,🅰️Ai # 不在大陆的AI
   - GEOSITE,google-gemini,🅰️Ai # gemini
+  - GEOSITE,category-ai-!cn,🅰️Ai # 中国外AI
 
   # 国际社交软件
-  - GEOSITE,telegram,国际社交软件 # Telegram服务
-  - GEOIP,telegram,国际社交软件,no-resolve # Telegram服务IP
-  - GEOSITE,x,国际社交软件 # 推特,x
-  - GEOSITE,category-social-media-!cn,国际社交软件 # 国外社交软件
+  - GEOSITE,telegram,📱国际社交软件 # Telegram服务
+  - GEOIP,telegram,📱国际社交软件,no-resolve # Telegram服务IP
+  - GEOSITE,x,📱国际社交软件 # 推特,x
+  - GEOSITE,category-social-media-!cn,📱国际社交软件 # 国外社交软件
 
   # 广告拦截与私有地址绕过块
   - GEOIP,private,DIRECT,no-resolve # 私有地址直连
@@ -477,14 +485,15 @@ rules:
 
   # 编程-docker相关
   - GEOSITE,category-container,✅默认代理 # 各种容器服务
+  - GEOSITE,docker,✅默认代理
   - GEOSITE,python,✅默认代理 # Python服务，例如pip直连下载较慢
 
 
   #### 兜底规则块，一般精细的分流规则应在其上
-  - GEOSITE,category-cryptocurrency,💰Crypto
   - GEOSITE,gfw,🧱GFW # GFW兜底
   - GEOSITE,microsoft,Ⓜ️微软服务 # 微软服务，放于GFW后是因为github等在GFW中需要代理
   - GEOSITE,steam,🎮Steam # Steam，默认直连，换区时修改此处，放于GFW之后是因创意工坊需始终代理
+#  - GEOSITE,geolocation-!cn,✅默认代理
   - GEOSITE,cn,🌐默认直连 # 中国域名
   - GEOIP,cn,🌐默认直连,no-resolve # 中国IP
   - MATCH,🐟漏网之鱼 # 漏网之鱼
