@@ -45,7 +45,7 @@ payload:
   - DOMAIN-SUFFIX,www.busybox.net # busybox源码
   - DOMAIN-SUFFIX,repo.jellyfin.org # Jellyfin仓库，亚太地区的CDN，用于下载更新/插件等等
   - DOMAIN-SUFFIX,sgp1.mirror.jellyfin.org # Jellyfin仓库，亚太地区的CDN，用于下载更新/插件等等
-  - DOMAIN-SUFFIX,deb.debian.org # debian仓库
+  # - DOMAIN-SUFFIX,deb.debian.org # debian仓库
 
   #################### 🚫Porn-FISH
   - DOMAIN-SUFFIX,zodgame.xyz # ZodGame论坛，主营i社游戏，国内可访问但较慢
