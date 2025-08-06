@@ -14,11 +14,8 @@ bind-address: "*" #🔴监听的本地网卡地址，*为全部
 log-level: warning # 日志级别
 ipv6: true # 是否接受ipv6流量
 tcp-concurrent: true # TCP并发
-profile: # 缓存设置
-  store-selected: true # 缓存 API面板 对策略组的选择
-  store-fake-ip: true # 缓存 fakeip 映射表
 #interface-name: en0  # clash流量出站接口，即接口绑定
-#find-process-mode: off # 进程匹配（off:关闭，alwas:开启，strict自动），tun模式下无效
+find-process-mode: strict # 进程匹配（off:关闭，alwas:开启，strict自动），tun模式下无效
 #lan-allowed-ips: # 允许连接的客户端IP，默认允许全部
 #- 0.0.0.0/0
 #- ::/0
@@ -34,7 +31,7 @@ profile: # 缓存设置
 ## TCP-KeepA-live配置 ------------------------------------------------------------------------------------------
 keep-alive-idle: 30 # 触发心跳包的链路无活动阈值，无活动后发送心跳包检测对端是否存活
 keep-alive-interval: 30 # 发送心跳包的间隔，无回应则最多重发9次后判断链路关闭
-disable-keep-alive: false # 禁用 keep alive，即允许长链接一直存在
+disable-keep-alive: false # 禁用 keep alive，即允许长链接一直存在，目前安卓端强制true
 
 ## API面板设置---------------------------------------------------------------------------------------------------
 #external-controller: 0.0.0.0:9095 #🔴API面板监听地址
@@ -56,6 +53,11 @@ geox-url: # GEO数据库下载地址，内核会按需下载，未被使用的�
   geosite: "https://ghfast.top/https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geosite.dat"
   mmdb: "https://ghfast.top/https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/country.mmdb"
   asn: "https://ghfast.top/https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/GeoLite2-ASN.mmdb"
+
+## 缓存设置
+profile:
+  store-selected: true # 缓存 API面板 对策略组的选择
+  store-fake-ip: true # 缓存 fakeip 映射表
 
 ## fakeip下的DNS设置---------------------------------------------------------------------------------------------------
 # 客户端发起网址A的DNS，到达mihomo的DNS模块，mihomo会使用下方的配置进行DNS
@@ -97,10 +99,10 @@ dns:
     - "geosite:cn" # cn可访问域名，为了兼容V2ray的cn标志，包括geolocation-cn和tld-cn
     - "geosite:private" # 私有地址，包括stun，lan，路由器后台网址等域名
     - "geosite:apple" # 苹果域名
-    - "geosite:win-extra" # 微软附加的隐私跟踪域名
     - "geosite:win-update" # 微软更新域名
+    - "geosite:sharepoint" # 微软商业版onedrive
     - "geosite:tailscale" # tailscale域名
-    - "geosite:tracker,category-pt" # BT/PT域名
+    - "geosite:tracker" # tracker域名，最好不要加pt站域名，CF加速容易无法访问
     - "geosite:synology" # 群晖域名
     - "geosite:category-ntp" # NTP域名
   # redir-host配置段
@@ -162,8 +164,8 @@ tun:
     - any:53
     - tcp://any:53
   mtu: 9000 # MTU
-  gso: true # 通用分段卸载
-  gso-max-size: 65536 # 数据块最大长度
+  gso: true # 通用分段卸载，仅支持Linux，提高性能
+  gso-max-size: 65536 # 通用分段卸载包的最大长度
   exclude-package: # 安卓排除的包名
     - com.tencent.mobileqq # QQ
     - com.tencent.mm # 微信
@@ -179,16 +181,16 @@ tun:
     - com.chinamworld.main # 中国建设银行
     - com.jd.jrapp # 京东金融
   #auto-redirect: true # 仅Linux有效，自动配置 iptables/nftables 以重定向 TCP 连接，需要auto-route: true
-  #strict-route: false # 严格路由，添加防火墙规则禁止Windows使用多DNS，有效防止DNS泄露，实测严重拖慢Windows访问速度
+  #strict-route: false # 将所有连接路由到 tun 来防止泄漏，但你的设备将无法其他设备被访问，严重拖慢Windows访问速度，可能造成虚拟机运行异常
   #endpoint-independent-nat: false # 独立于端点的 NAT，性能可能下降，不建议不需要时开启
 
 ## 代理提供者设置---------------------------------------------------------------------------------------------------
 proxy-providers-general: &proxy-providers-general # 代理提供者通用配置
   type: http # 类型，可选http/file/inline
   interval: 86400 # 更新间隔，单位秒
-  proxy: DIRECT # http类型更新时使用的代理组，不建议设置代理，如果你的机场需要代理才能订阅，那先有鸡还是先有蛋？
+  proxy: 🌐默认直连 # http类型更新时使用的代理组，不建议设置代理，如果你的机场需要代理才能订阅，那先有鸡还是先有蛋？
   size-limit: 0 # 文件大小限制，0为不限制
-#  exclude-filter: "(?i)官网|每月刷新订阅|机场|到期|https://|剩余流量"
+  #exclude-filter: "(?i)官网|每月刷新订阅|机场|到期|https://|剩余流量"
   override:
     tfo: false # 启用TCP Fast Open，一般都不支持
     mptcp: false # 启用TCP Multi Path，一般都不支持
@@ -217,7 +219,7 @@ health-check-general: &health-check-general # 代理组健康检查通用配置
   <<: *use-all-proxy-providers
   url: http://www.gstatic.com/generate_204
   interval: 30 # 健康检查间隔
-  tolerance: 80 # 延迟容忍度，单位ms
+  tolerance: 600 # 延迟容忍度，单位ms
   lazy: true # 未选中当前组时不进行测试
   timeout: 5000 # 健康检查超时，单位ms
   max-failed-times: 5 # 失败次数，超过则执行一次强制健康检查
@@ -330,6 +332,10 @@ proxy-groups:
     <<: *health-check-general
     filter: "(?=.*(美|US|(?i)States|America))^((?!(OneYuan|港|台|日|韩|新|倍)).)*$"
 
+  # - name: 🔐PT网站
+  #   type: select
+  #   <<: *default-proxy
+
   - name: 🌐默认直连
     type: select
     <<: *default-direct
@@ -337,7 +343,6 @@ proxy-groups:
   - name: 🐟漏网之鱼
     type: select
     <<: *default-direct
-
 
 ## 规则提供者设置---------------------------------------------------------------------------------------------------
 rule-providers-general: &rule-providers-general
@@ -417,6 +422,10 @@ rules:
   - GEOSITE,x,国际社交软件 # 推特,x
   - GEOSITE,category-social-media-!cn,国际社交软件 # 国外社交软件
 
+  # 禁用QUIC，防止速度不佳和IP泄露，不包括国内
+  - AND,(AND,(DST-PORT,443),(NETWORK,UDP)),(NOT,((GEOSITE,cn))),REJECT
+  - AND,(AND,(DST-PORT,443),(NETWORK,UDP)),(NOT,((GEOIP,CN))),REJECT
+
   # 广告拦截与私有地址绕过块
   - GEOIP,private,DIRECT,no-resolve # 私有地址直连
   - GEOSITE,private,DIRECT # 私有地址直连
@@ -424,15 +433,14 @@ rules:
   #### 代理规则块，按照使用频率/规则集大小排序
   # 其他
   - GEOSITE,tailscale,DIRECT # 必须直连，否则tailscale代理打洞
-  - GEOSITE,tracker,DIRECT # 必须直连，否则PT/BT直连代理下载
-  - GEOSITE,category-pt,DIRECT # 必须直连，否则PT标记盒子
-  - GEOSITE,tmdb,✅默认代理 # TMDB服务，影视刮削
+
+  - GEOSITE,tracker,DIRECT # 必须直连，否则BT直连代理下载
+  # - GEOSITE,category-pt,🔐PT网站 # CF加速的站点容易无法访问，但需要注意下载代理问题
+  - GEOSITE,tmdb,✅默认代理 # TMDB服务，影视刮削，直连访问缓慢经常失败
 
   # 微软相关
-  - GEOSITE,win-extra,Ⓜ️微软服务 # 微软附加隐私跟踪域名
   - GEOSITE,win-update,Ⓜ️微软服务 # 微软更新域名
   - GEOSITE,synology,DIRECT # 群晖服务，包括QC
-
   # 编程-docker相关
   - GEOSITE,category-container,✅默认代理 # 各种容器服务
   - GEOSITE,python,✅默认代理 # Python服务，例如pip直连下载较慢
