@@ -351,20 +351,20 @@ rule-providers-general: &rule-providers-general
   interval: 86400
 
 rule-providers:
-  FISH-延迟最低:
-    <<: *rule-providers-general
-    url: https://raw.githubusercontent.com/refined-fish/clash_rule_fish/refs/heads/main/Ruleset/♻️延迟最低-FISH.yaml
-    path: ./providers/rule/rule-provider_FISH-延迟最低.yaml
+  # FISH-延迟最低:
+  #   <<: *rule-providers-general
+  #   url: https://raw.githubusercontent.com/refined-fish/clash_rule_fish/refs/heads/main/Ruleset/♻️延迟最低-FISH.yaml
+  #   path: ./providers/rule/rule-provider_FISH-延迟最低.yaml
 
-  FISH-Direct:
-    <<: *rule-providers-general
-    url: https://raw.githubusercontent.com/refined-fish/clash_rule_fish/refs/heads/main/Ruleset/🌐Direct-FISH.yaml
-    path: ./providers/rule/rule-provider_FISH-Direct.yaml
+  # FISH-Direct:
+  #   <<: *rule-providers-general
+  #   url: https://raw.githubusercontent.com/refined-fish/clash_rule_fish/refs/heads/main/Ruleset/🌐Direct-FISH.yaml
+  #   path: ./providers/rule/rule-provider_FISH-Direct.yaml
 
-  FISH-Copilot:
-    <<: *rule-providers-general
-    url: https://raw.githubusercontent.com/refined-fish/clash_rule_fish/refs/heads/main/Ruleset/Ⓜ️微软Copilot-FISH.yaml
-    path: ./providers/rule/rule-provider_FISH-Copilot.yaml
+  # FISH-Copilot:
+  #   <<: *rule-providers-general
+  #   url: https://raw.githubusercontent.com/refined-fish/clash_rule_fish/refs/heads/main/Ruleset/Ⓜ️微软Copilot-FISH.yaml
+  #   path: ./providers/rule/rule-provider_FISH-Copilot.yaml
 
    
   custom_rules:
@@ -386,9 +386,9 @@ rule-providers:
 rules:
   #### 对于必须直连者直接使用direct写死，其他尽可能使用代理组以方便面板控制以及切换测试
   # FISH自定义规则块
-  - RULE-SET,FISH-Direct,DIRECT # FISH自定义直连
-  - RULE-SET,FISH-延迟最低,✅默认代理
-  - RULE-SET,FISH-Copilot,🅰️Ai # 微软copilot服务
+  # - RULE-SET,FISH-Direct,DIRECT # FISH自定义直连
+  # - RULE-SET,FISH-延迟最低,✅默认代理
+  # - RULE-SET,FISH-Copilot,🅰️Ai # 微软copilot服务
 
 
   # Ho自定义规则块

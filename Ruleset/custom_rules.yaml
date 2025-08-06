@@ -1,0 +1,82 @@
+payload:
+  - # 补充列表-custom-rules
+  - # 域名后缀匹配
+  - DOMAIN-SUFFIX,grabcad.com
+  - DOMAIN-SUFFIX,linux.do
+  - DOMAIN-SUFFIX,printables.com
+  - DOMAIN-SUFFIX,grempt.com
+  - DOMAIN-SUFFIX,cyberbus.net
+  - DOMAIN-SUFFIX,brew.sh
+  - DOMAIN-SUFFIX,qichiyu.com
+  - DOMAIN-SUFFIX,ipwho.is
+  - DOMAIN,ptest-1.ipcheck.ing
+  - DOMAIN,ptest-3.ipcheck.ing
+  - DOMAIN,ptest-5.ipcheck.ing
+  - DOMAIN,ptest-6.ipcheck.ing
+  - DOMAIN,ptest-7.ipcheck.ing
+  - DOMAIN,ptest-4.ipcheck.ing
+  - DOMAIN,ptest-8.ipcheck.ing
+  - DOMAIN,ptest-2.ipcheck.ing
+  - # 域名关键字匹配
+  - DOMAIN-KEYWORD,shuttle
+  - DOMAIN-KEYWORD,macapp
+  - DOMAIN-KEYWORD,metacubex
+  - DOMAIN-KEYWORD,moviejie
+  - DOMAIN-KEYWORD,nikkinikki
+
+
+  ### ♻️延迟最低-FISH
+  #################### wiki
+  - DOMAIN-SUFFIX,wiki.movie-pilot.org # Moviepilot的文档
+
+  #################### HomeAssistant
+  - DOMAIN-SUFFIX,basemaps.cartocdn.com # 地图的CDN，不代理加载缓慢，其原始服务已被GFW包含
+  - DOMAIN-SUFFIX,home-assistant.io # 社区，论坛等，不代理加载缓慢
+
+  #################### openWRT
+  - DOMAIN-SUFFIX,openwrt.ai # 在线固件定制-kiddin9
+  - DOMAIN-SUFFIX,git.openwrt.org # openwrt源码库
+  - DOMAIN-SUFFIX,sources.cdn.openwrt.org # openwrt源码库
+  - DOMAIN-SUFFIX,mirror2.openwrt.org # openwrt源码库
+  - DOMAIN-SUFFIX,www.lwfinger.com # openwrt工具链之一
+
+  #################### 机场
+  - DOMAIN-SUFFIX,coo.wiki # COO机场
+  - DOMAIN-SUFFIX,xn--4gq62f52gdss.ink # 一元机场
+
+  #################### 论坛
+  - DOMAIN-SUFFIX,v2rayssr.com # V2RaySSR综合网，禁止大陆IP访问，内有一些教程交流贴
+
+  #################### Game
+  - DOMAIN-SUFFIX,thunderstore.io # mod下载站，steam游戏mod下载站
+  - DOMAIN-SUFFIX,pegasus-frontend.org # 天马G主页
+  - DOMAIN-SUFFIX,prodkeys.net # NS密钥下载
+  - DOMAIN-SUFFIX,v3.stardew.info # 星露谷物语在线编辑器
+  - DOMAIN-SUFFIX,simcitybuildit.com # 模拟城市天际线-ipad版，可以直连但是卡顿，代理提高访问体验
+
+  #################### 💻CodeSource，程序源码规则集，一般用于编译或下载程序资源/更新等
+  - DOMAIN-SUFFIX,artifacts.bitwarden.com # bitwarden安装程序资源下载网址，不代理的话bitwarden安装过程要10+分钟
+  - DOMAIN-SUFFIX,sub.xeton.dev # clash订阅转换地址
+  - DOMAIN-SUFFIX,www.python.org # Python源码相关分发
+  - DOMAIN-SUFFIX,cdn.kernel.org # Linux内核下载地址
+  - DOMAIN-SUFFIX,sourceware.org # 代码托管服务器，包括大部分GNU工具链，编译openwrt会用到
+  - DOMAIN-SUFFIX,ftpmirror.gnu.org # 代码托管服务器，包括大部分GNU工具链，编译openwrt会用到
+  - DOMAIN-SUFFIX,mirror.lyrahosting.com # 代码托管服务器，包括大部分GNU工具链，编译openwrt会用到
+  - DOMAIN-SUFFIX,ftp.nluug.nl # 代码托管服务器，包括大部分GNU工具链，编译openwrt会用到
+  - DOMAIN-SUFFIX,ftp.wayne.edu # 代码托管服务器，包括大部分GNU工具链，编译openwrt会用到
+  - DOMAIN-SUFFIX,mirror.cyberbits.eu # 代码托管服务器，包括大部分GNU工具链，编译openwrt会用到
+  - DOMAIN-SUFFIX,static.rust-lang.org # 代码托管服务器，包括大部分GNU工具链，编译openwrt会用到
+  - DOMAIN-SUFFIX,cache.ruby-lang.org # ruby代码分发
+  - DOMAIN-SUFFIX,git.codelinaro.org # codelinaro代码分发
+  - DOMAIN-SUFFIX,mirror.csclub.uwaterloo.ca # 滑铁卢大学代码分发镜像加速
+  - DOMAIN-SUFFIX,mirror.netcologne.de # 德国科隆电信公司分发服务器
+  - DOMAIN-SUFFIX,www.busybox.net # busybox源码
+  - DOMAIN-SUFFIX,repo.jellyfin.org # Jellyfin仓库，亚太地区的CDN，用于下载更新/插件等等
+  - DOMAIN-SUFFIX,sgp1.mirror.jellyfin.org # Jellyfin仓库，亚太地区的CDN，用于下载更新/插件等等
+  - DOMAIN-SUFFIX,deb.debian.org # debian仓库
+
+  #################### 🚫Porn-FISH
+  - DOMAIN-SUFFIX,zodgame.xyz # ZodGame论坛，主营i社游戏，国内可访问但较慢
+  - DOMAIN-SUFFIX,ecchi100.com # 里番在线
+  - DOMAIN-SUFFIX,www.acgkkk.com # ACGUUU资源站
+  - DOMAIN-SUFFIX,www.gtloli.eu.org # 哥特动漫王国
