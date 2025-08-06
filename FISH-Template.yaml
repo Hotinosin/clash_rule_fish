@@ -94,13 +94,13 @@ dns:
   fake-ip-filter-mode: blacklist # 黑/白名单模式，黑名单下，filter内容将使用redir-host模式解析
   fake-ip-filter: # fakeip过滤，以下域名将使用redir-host模式，填入无需代理的内容
     - "rule-set:FISH-Direct" # 个人收集直连域名，不能直接用GEOSITE引用的零散域名
+    - "rule-set:custom_ddns" #ho的直连域名
     - "rule-set:custom_direct" #ho的直连域名
     - "geosite:category-ads-all" # 广告域名
     - "geosite:cn" # cn可访问域名，为了兼容V2ray的cn标志，包括geolocation-cn和tld-cn
     - "geosite:private" # 私有地址，包括stun，lan，路由器后台网址等域名
     - "geosite:apple" # 苹果域名
     - "geosite:win-update" # 微软更新域名
-    - "geosite:sharepoint" # 微软商业版onedrive
     - "geosite:tailscale" # tailscale域名
     - "geosite:tracker" # tracker域名，最好不要加pt站域名，CF加速容易无法访问
     - "geosite:synology" # 群晖域名
@@ -218,12 +218,12 @@ use-all-proxy-providers: &use-all-proxy-providers # 代理组通用配置
 health-check-general: &health-check-general # 代理组健康检查通用配置
   <<: *use-all-proxy-providers
   url: http://www.gstatic.com/generate_204
-  interval: 30 # 健康检查间隔
+  interval: 60 # 健康检查间隔
   tolerance: 600 # 延迟容忍度，单位ms
   lazy: true # 未选中当前组时不进行测试
   timeout: 5000 # 健康检查超时，单位ms
   max-failed-times: 5 # 失败次数，超过则执行一次强制健康检查
-  # filter: "^(?!.*(ink|看这里|到期|机场|地址|流量|订阅|计费|日本)).*$"
+  filter: "^(?!.*(ink|看这里|到期|机场|地址|流量|订阅|计费|日本)).*$"
 
 default-proxy: &default-proxy # 默认代理组
   proxies:
@@ -232,7 +232,7 @@ default-proxy: &default-proxy # 默认代理组
     - ⚠️故障切换
     - 🖐️手动切换
     - 🇭🇰香港节点
-    - 🇨🇳台湾节点
+    - 🇭🇰香港VLESS
     - 🇨🇳台湾VLESS
     - 🇸🇬狮城节点
     - 🇺🇲美国节点
@@ -254,11 +254,12 @@ proxy-groups:
   - name: ⚠️故障切换
     type: fallback
     <<: *health-check-general
-    filter: "(?=.*(台湾))^((?!(日|韩|深|美|倍)).)*$"
+    filter: "(?=.*(Ho))^((?!(日|韩|深|美|倍)).)*$"
 
   - name: 🖐️手动切换
     type: select
     <<: *use-all-proxy-providers
+    # filter: "(?=.*(香港|新加坡|台湾|美国))^((?!(日|韩|深|美|倍)).)*$"
     filter: "^(?!.*(ink|看这里|到期|机场|地址|流量|订阅|计费|倍)).*$"
 
   ##################################
@@ -269,7 +270,7 @@ proxy-groups:
       - ⚠️故障切换
       - 🖐️手动切换
       - 🇭🇰香港节点
-      - 🇨🇳台湾节点
+      - 🇭🇰香港VLESS
       - 🇨🇳台湾VLESS
       - 🇸🇬狮城节点
       - 🇺🇲美国节点
@@ -304,22 +305,22 @@ proxy-groups:
   - name: 🇭🇰香港节点
     type: url-test
     <<: *health-check-general
-    filter: "(?=.*(港|HK|hk|Hong Kong|HongKong|hongkong|(?i)Hong))^((?!(OneYuan|台|日|韩|新|深|美|倍)).)*$"
+    filter: "(?=.*(港|HK|hk|Hong Kong|HongKong|hongkong|(?i)Hong))^((?!(台|日|韩|新|深|美|倍)).)*$"
 
-  - name: 🇨🇳台湾节点
+  - name: 🇭🇰香港VLESS
     type: url-test
     <<: *health-check-general
-    filter: "(?=.*(台|新北|彰化|TW|Taiwan))^((?!(OneYuan|Ho|港|美|日|韩|新|倍)).)*$"
+    filter: "(?=.*(HK-TLS))^((?!(OneYuan|台|日|韩|新|深|美|倍)).)*$"
 
   - name: 🇨🇳台湾VLESS
     type: url-test
     <<: *health-check-general
-    filter: "(?=.*(Ho|台|新北|彰化|TW|Taiwan))^((?!(OneYuan|Gatern|港|美|日|韩|新|倍)).)*$"
+    filter: "(?=.*(台|新北|彰化|TW|Taiwan))^((?!(OneYuan|港|美|日|韩|新|倍)).)*$"
 
   - name: 🇸🇬狮城节点
     type: url-test
     <<: *health-check-general
-    filter: "(?=.*(新加坡|SG|(?i)Singapore))^((?!(OneYuan|港|台|韩|日|美|倍)).)*$"
+    filter: "(?=.*(新加坡|SG|(?i)Singapore))^((?!(港|台|韩|日|美|倍)).)*$"
 
   # - name: 🇯🇵日本节点
   #   type: url-test
@@ -330,7 +331,7 @@ proxy-groups:
   - name: 🇺🇲美国节点
     type: url-test
     <<: *health-check-general
-    filter: "(?=.*(美|US|(?i)States|America))^((?!(OneYuan|港|台|日|韩|新|倍)).)*$"
+    filter: "(?=.*(美|US|(?i)States|America))^((?!(港|台|日|韩|新|倍)).)*$"
 
   # - name: 🔐PT网站
   #   type: select
@@ -393,8 +394,15 @@ rules:
 
   # Ho自定义规则块
   - RULE-SET,custom_direct,DIRECT
-  - RULE-SET,custom_ddns,✅默认代理
+  - RULE-SET,custom_ddns,DIRECT
   - RULE-SET,custom_rules,✅默认代理
+
+  - GEOIP,google,✅默认代理,,no-resolve
+
+  # AI相关
+  - GEOSITE,openai,🅰️Ai # openai服务
+  - GEOSITE,google-gemini,🅰️Ai # gemini
+  - GEOSITE,category-ai-!cn,🅰️Ai # 中国外AI
 
   # 常见国内
   - GEOSITE,speedtest,✈️ Speedtest
@@ -411,10 +419,6 @@ rules:
   - GEOSITE,tiktok,✅默认代理
   - GEOSITE,netflix,✅默认代理
 
-  # AI相关
-  - GEOSITE,openai,🅰️Ai # openai服务
-  - GEOSITE,google-gemini,🅰️Ai # gemini
-  - GEOSITE,category-ai-!cn,🅰️Ai # 中国外AI
 
   # 国际社交软件
   - GEOSITE,telegram,国际社交软件 # Telegram服务
