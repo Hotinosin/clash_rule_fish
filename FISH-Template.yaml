@@ -201,19 +201,11 @@ proxy-providers-general: &proxy-providers-general # 代理提供者通用配置
     #up: "10 Mbps" # 上行限速
     ip-version: dual # 可选dual/ipv4/ipv6/ipv4-prefer/ipv6-prefer，即优先v4或v6，仅v4或v6
     
-proxy-providers:
-  #❗provider占位1
-  #❗provider占位2
-  #❗provider占位3
-  #❗provider占位4
+proxy-providers: !!insert:proxy_providers
 
 ## 代理组设置---------------------------------------------------------------------------------------------------
-use-all-proxy-providers: &use-all-proxy-providers # 代理组通用配置
-  use:
-    #❗use-provider占位1
-    #❗use-provider占位2
-    #❗use-provider占位3
-    #❗use-provider占位4
+use-all-proxy-providers: &use-all-proxy-providers
+  use: !!insert:proxy_use_list
 
 health-check-general: &health-check-general # 代理组健康检查通用配置
   <<: *use-all-proxy-providers

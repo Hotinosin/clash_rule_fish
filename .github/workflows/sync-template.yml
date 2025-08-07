@@ -1,0 +1,35 @@
+name: Sync FISH Template to ho_edit_tpl
+
+on:
+  push:
+    branches:
+      - ho_edit
+    paths:
+      - FISH-Template.yaml
+
+jobs:
+  sync-template:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout ho_edit
+        uses: actions/checkout@v4
+        with:
+          ref: ho_edit
+          persist-credentials: false
+          fetch-depth: 0
+
+      - name: Modify FISH-Template.yaml (add !!insert placeholders)
+        run: |
+          sed -i 's/^proxy-providers:.*/proxy-providers: !!insert:proxy_providers/' FISH-Template.yaml
+          sed -i 's/^use-all-proxy-providers:.*/use-all-proxy-providers: \&use-all-proxy-providers\n  use: !!insert:proxy_use_list/' FISH-Template.yaml
+
+      - name: Commit changes to ho_edit_tpl
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch ho_edit_tpl
+          git checkout ho_edit_tpl
+          git checkout ho_edit -- FISH-Template.yaml
+          git add FISH-Template.yaml
+          git commit -m "Auto sync from ho_edit and insert placeholders" || echo "Nothing to commit"
+          git push origin ho_edit_tpl
