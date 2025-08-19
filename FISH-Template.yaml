@@ -402,7 +402,6 @@ rules:
   - GEOSITE,bytedance,DIRECT #字节跳动
   - RULE-SET,custom_direct,DIRECT
   - RULE-SET,custom_ddns,DIRECT
-  - RULE-SET,FISH-Direct,DIRECT # FISH自定义直连
   - GEOSITE,synology,DIRECT # 群晖服务，包括QC
 
   # FISH自定义规则块
