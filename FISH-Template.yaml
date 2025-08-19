@@ -34,10 +34,10 @@ keep-alive-interval: 30 # 发送心跳包的间隔，无回应则最多重发9�
 disable-keep-alive: false # 禁用 keep alive，即允许长链接一直存在，目前安卓端强制true
 
 ## API面板设置---------------------------------------------------------------------------------------------------
-#external-controller: 0.0.0.0:9095 #🔴API面板监听地址
-#secret: "" #🔴API面板访问密钥
-#external-ui: ./ui #🔴API面板静态资源路径
-#external-ui-name: zashboard # API面板名，配合路径拼接成路径，例如/ui/metacubexd
+external-controller: 0.0.0.0:9090 #🔴API面板监听地址
+secret: "" #🔴API面板访问密钥
+external-ui: ui #🔴API面板静态资源路径
+external-ui-name: zashboard # API面板名，配合路径拼接成路径，例如/ui/metacubexd
 external-ui-url: "https://ghfast.top/https://github.com/Zephyruso/zashboard/releases/latest/download/dist.zip" #🔴API面板下载地址
 
 ## 外部资源下载设置---------------------------------------------------------------------------------------------------
@@ -71,13 +71,15 @@ profile:
 # 因为fakeip模式下，国外域名全部是fakeip并未进行本地解析，而且国外域名内网全部使用fakeip段，方便分流
 
 public-dns: &public-dns # 快速的DNS，不关心是否存在污染和劫持，只要快就好了
-  - dhcp://wan # 指定网卡DHCP获取的DNS，硬路由的wan口网卡名一般为wan
-#  - dhcp://eth1 # 软路由的wan口一般为最后一张网卡，eth0,eth1 双网口就是eth1
-  - 119.29.29.29 # 腾讯DNS
+  # - dhcp://wan # 指定网卡DHCP获取的DNS，硬路由的wan口网卡名一般为wan
+  # - dhcp://eth3 # 软路由的wan口一般为最后一张网卡，eth0,eth1 双网口就是eth1
+  # - 233.5.5.5 # 阿里DNS
+  - 119.29.29.29
+  # - 114.114.114.114 # 阿里DNS
 
-secure-dns: &secure-dns # 加密的DNS，必须避免被解析为0.0.0.0等污染
-  # - https://8.8.8.8/dns-query # 谷歌DNS
-  - https://223.5.5.5/dns-query#h3=true # 阿里主DNS，支持H3
+secure-dns: &secure-dns # 加密的DNS，必须避免被解析为0.0.0.0等污染，为域名时必须搭配default-nameserver使用
+  - https://dns.google/dns-query
+  - https://cloudflare-dns.com/dns-query
 
 dns:
   enable: true #🔴启用dns模块，否则采用系统DNS
@@ -89,6 +91,7 @@ dns:
   use-hosts: true # 查询配置文件中的 hosts
   use-system-hosts: true # 查询系统的 hosts
   #respect-rules: false # DNS请求遵循路由规则，需先配置好 proxy-server-nameserver，否则出现鸡蛋问题
+
   # fakeip配置段
   fake-ip-range: 198.18.0.1/16 #🔴fakeip 的 IP 段，tun接口的默认 IPV4 地址 也使用此值作为参考
   fake-ip-filter-mode: blacklist # 黑/白名单模式，黑名单下，filter内容将使用redir-host模式解析
@@ -106,12 +109,15 @@ dns:
     - "geosite:synology" # 群晖域名
     - "geosite:category-ntp" # NTP域名
   # redir-host配置段
-  default-nameserver: *secure-dns # 解析DNS服务器域名的DNS，可以加密但必须为IP，如果不用DNS服务器的域名则无需配置
+  default-nameserver: *public-dns # 解析DNS服务器域名的DNS，可以加密但必须为IP，如果不用DNS服务器的域名则无需配置
   proxy-server-nameserver: *secure-dns # 解析代理节点域名的DNS，不填则遵循namepolicy
   direct-nameserver: *public-dns # 解析direct组的DNS，不填则遵循namepolicy
-  #direct-nameserver-follow-policy: false # direct代理组是否遵循nameserver-policy，false则直接使用direct-nameserver
+  # direct-nameserver-follow-policy: false # direct代理组是否遵循nameserver-policy，false则直接使用direct-nameserver
   nameserver-policy: # 优先级高于nameserver
     "geosite:category-ads-all": rcode://success # 匹配广告域名，返回空结果
+    "rule-set:FISH-Direct": *public-dns # 匹配FISH-Direct
+    "geosite:cn,apple,private": *public-dns # 匹配中国，苹果域名，私有地址
+    "geosite:geolocation-!cn": *secure-dns # 匹配非中国域名
   nameserver: *public-dns # 兜底默认DNS组，未命中 nameserver-policy 时启用
   # fallback: # 过时的配置，已被 nameserver-policy 取代，使用时会产生DNS泄露
 
@@ -155,7 +161,7 @@ sniffer: # 嗅探，获取SNI中的域名，使mihomo能够反解未经自己DNS
 
 ## tun设置---------------------------------------------------------------------------------------------------
 tun:
-  enable: true #🔴启用Tun接口
+  enable: false #🔴启用Tun接口
   stack: mixed # TUN 堆栈模式,建议 mixed（TCP：system，UDP：Gvisor）
   device: utun0 #🔴TUN 网卡名，MacOS 只能 utun 开头
   auto-route: true # 自动设置全局路由，自动将全局流量路由进 tun
@@ -188,19 +194,20 @@ tun:
 proxy-providers-general: &proxy-providers-general # 代理提供者通用配置
   type: http # 类型，可选http/file/inline
   interval: 86400 # 更新间隔，单位秒
-  proxy: 🌐默认直连 # http类型更新时使用的代理组，不建议设置代理，如果你的机场需要代理才能订阅，那先有鸡还是先有蛋？
+  proxy: DIRECT # http类型更新时使用的代理组，不建议设置代理，如果你的机场需要代理才能订阅，那先有鸡还是先有蛋？
   size-limit: 0 # 文件大小限制，0为不限制
-  #exclude-filter: "(?i)官网|每月刷新订阅|机场|到期|https://|剩余流量"
+  # exclude-filter: "(?i)官网|每月刷新订阅|机场|到期|https://|剩余流量"
+
   override:
     tfo: false # 启用TCP Fast Open，一般都不支持
     mptcp: false # 启用TCP Multi Path，一般都不支持
     udp: true # 启用UDP
     udp-over-tcp: false # 启用UDP over TCP
     skip-cert-verify: false # 跳过证书验证
-    #down: "50 Mbps" # 下行限速
-    #up: "10 Mbps" # 上行限速
-    ip-version: dual # 可选dual/ipv4/ipv6/ipv4-prefer/ipv6-prefer，即优先v4或v6，仅v4或v6
-    
+    # down: "50 Mbps" # 下行限速
+    # up: "10 Mbps" # 上行限速
+    ip-version: ipv4-prefer # 可选dual/ipv4/ipv6/ipv4-prefer/ipv6-prefer，即优先v4或v6，仅v4或v6
+
 proxy-providers:
   #❗provider占位1
   #❗provider占位2
@@ -219,7 +226,7 @@ health-check-general: &health-check-general # 代理组健康检查通用配置
   <<: *use-all-proxy-providers
   url: http://www.gstatic.com/generate_204
   interval: 60 # 健康检查间隔
-  tolerance: 600 # 延迟容忍度，单位ms
+  tolerance: 300 # 延迟容忍度，单位ms
   lazy: true # 未选中当前组时不进行测试
   timeout: 5000 # 健康检查超时，单位ms
   max-failed-times: 5 # 失败次数，超过则执行一次强制健康检查
@@ -228,7 +235,6 @@ health-check-general: &health-check-general # 代理组健康检查通用配置
 default-proxy: &default-proxy # 默认代理组
   proxies:
     - ✅默认代理
-    - 🇸🇬🇨🇳新台优选
     - ⚠️故障切换
     - 🖐️手动切换
     - 🇭🇰香港节点
@@ -246,11 +252,6 @@ default-direct: &default-direct # 默认直连组
 
 proxy-groups:
   ##################################
-  - name: 🇸🇬🇨🇳新台优选
-    type: url-test
-    <<: *health-check-general
-    filter: "(?=.*(新加坡|台湾))^((?!(OneYuan|日|韩|深|美|倍)).)*$"
-
   - name: ⚠️故障切换
     type: fallback
     <<: *health-check-general
@@ -266,7 +267,6 @@ proxy-groups:
   - name: ✅默认代理
     type: select
     proxies:
-      - 🇸🇬🇨🇳新台优选
       - ⚠️故障切换
       - 🖐️手动切换
       - 🇭🇰香港节点
@@ -281,7 +281,7 @@ proxy-groups:
     type: select
     <<: *default-proxy
 
-  - name: 国际社交软件
+  - name: 📱国际社交软件
     type: select
     <<: *default-proxy
 
@@ -386,6 +386,25 @@ rule-providers:
 ## 路由规则设置---------------------------------------------------------------------------------------------------
 rules:
   #### 对于必须直连者直接使用direct写死，其他尽可能使用代理组以方便面板控制以及切换测试
+
+  # 私有地址绕过块
+  - GEOIP,private,DIRECT,no-resolve # 私有地址直连
+  - GEOSITE,private,DIRECT # 私有地址直连
+
+  # Direct 直连规则
+  - GEOSITE,speedtest,✈️ Speedtest
+  - GEOSITE,tencent,DIRECT
+  - GEOSITE,tencent-games,DIRECT
+  - GEOSITE,apple,DIRECT
+  - GEOSITE,onedrive,DIRECT
+  - GEOSITE,bilibili,DIRECT
+  - GEOSITE,feishu,DIRECT #飞书
+  - GEOSITE,bytedance,DIRECT #字节跳动
+  - RULE-SET,custom_direct,DIRECT
+  - RULE-SET,custom_ddns,DIRECT
+  - RULE-SET,FISH-Direct,DIRECT # FISH自定义直连
+  - GEOSITE,synology,DIRECT # 群晖服务，包括QC
+
   # FISH自定义规则块
   # - RULE-SET,FISH-Direct,DIRECT # FISH自定义直连
   # - RULE-SET,FISH-延迟最低,✅默认代理
@@ -395,12 +414,6 @@ rules:
   - AND,(AND,(DST-PORT,443),(NETWORK,UDP)),(NOT,((GEOSITE,cn))),REJECT
   - AND,(AND,(DST-PORT,443),(NETWORK,UDP)),(NOT,((GEOIP,CN))),REJECT
 
-  # Ho自定义规则块
-  - RULE-SET,custom_direct,DIRECT
-  - RULE-SET,custom_ddns,DIRECT
-  - RULE-SET,custom_rules,✅默认代理
-
-  - GEOIP,google,✅默认代理,,no-resolve
 
   # AI相关
   - GEOSITE,openai,🅰️Ai # openai服务
@@ -409,17 +422,10 @@ rules:
   - GEOSITE,anthropic,🅰️Ai # anthropic
   - GEOSITE,category-ai-!cn,🅰️Ai # 中国外AI
 
-  # 常见国内
-  - GEOSITE,speedtest,✈️ Speedtest
-  - GEOSITE,tencent,DIRECT
-  - GEOSITE,tencent-games,DIRECT
-  - GEOSITE,apple,DIRECT
-  - GEOSITE,onedrive,DIRECT
-  - GEOSITE,bilibili,DIRECT
-  - GEOSITE,feishu,DIRECT #飞书
-  - GEOSITE,bytedance,DIRECT #字节跳动
 
   # 常见外网服务
+  - RULE-SET,custom_rules,✅默认代理
+  - GEOIP,google,✅默认代理,,no-resolve
   - GEOSITE,github,✅默认代理
   - GEOSITE,youtube,✅默认代理
   - GEOSITE,google,✅默认代理
@@ -427,31 +433,24 @@ rules:
   - GEOSITE,netflix,✅默认代理
 
 
-  # 国际社交软件
-  - GEOSITE,telegram,国际社交软件 # Telegram服务
-  - GEOIP,telegram,国际社交软件,no-resolve # Telegram服务IP
-  - GEOSITE,x,国际社交软件 # 推特,x
-  - GEOSITE,category-social-media-!cn,国际社交软件 # 国外社交软件
-
-
-
-  # 广告拦截与私有地址绕过块
-  - GEOIP,private,DIRECT,no-resolve # 私有地址直连
-  - GEOSITE,private,DIRECT # 私有地址直连
+  # 📱国际社交软件
+  - GEOSITE,telegram,📱国际社交软件 # Telegram服务
+  - GEOIP,telegram,📱国际社交软件,no-resolve # Telegram服务IP
+  - GEOSITE,x,📱国际社交软件 # 推特,x
+  - GEOSITE,category-social-media-!cn,📱国际社交软件 # 国外社交软件
 
   #### 代理规则块，按照使用频率/规则集大小排序
   # 其他
   - GEOSITE,tailscale,DIRECT # 必须直连，否则tailscale代理打洞
-
   - GEOSITE,tracker,DIRECT # 必须直连，否则BT直连代理下载
   # - GEOSITE,category-pt,🔐PT网站 # CF加速的站点容易无法访问，但需要注意下载代理问题
   - GEOSITE,tmdb,✅默认代理 # TMDB服务，影视刮削，直连访问缓慢经常失败
 
   # 微软相关
   - GEOSITE,win-update,Ⓜ️微软服务 # 微软更新域名
-  - GEOSITE,synology,DIRECT # 群晖服务，包括QC
   # 编程-docker相关
   - GEOSITE,category-container,✅默认代理 # 各种容器服务
+  - GEOSITE,docker,✅默认代理
   - GEOSITE,python,✅默认代理 # Python服务，例如pip直连下载较慢
 
 
