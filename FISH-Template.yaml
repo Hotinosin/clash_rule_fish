@@ -96,7 +96,6 @@ dns:
   fake-ip-range: 198.18.0.1/16 #🔴fakeip 的 IP 段，tun接口的默认 IPV4 地址 也使用此值作为参考
   fake-ip-filter-mode: blacklist # 黑/白名单模式，黑名单下，filter内容将使用redir-host模式解析
   fake-ip-filter: # fakeip过滤，以下域名将使用redir-host模式，填入无需代理的内容
-    # - "rule-set:FISH-Direct" # 个人收集直连域名，不能直接用GEOSITE引用的零散域名
     - "rule-set:custom_ddns" #ho的直连域名
     - "rule-set:custom_direct" #ho的直连域名
     - "geosite:category-ads-all" # 广告域名
@@ -115,7 +114,6 @@ dns:
   # direct-nameserver-follow-policy: false # direct代理组是否遵循nameserver-policy，false则直接使用direct-nameserver
   nameserver-policy: # 优先级高于nameserver
     "geosite:category-ads-all": rcode://success # 匹配广告域名，返回空结果
-    "rule-set:FISH-Direct": *public-dns # 匹配FISH-Direct
     "geosite:cn,apple,private": *public-dns # 匹配中国，苹果域名，私有地址
     "geosite:geolocation-!cn": *secure-dns # 匹配非中国域名
   nameserver: *public-dns # 兜底默认DNS组，未命中 nameserver-policy 时启用
