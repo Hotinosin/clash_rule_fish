@@ -368,17 +368,17 @@ rule-providers:
    
   custom_rules:
     <<: *rule-providers-general
-    url: https://raw.githubusercontent.com/Hotinosin/clash-rule/refs/heads/main/payload/custom_rules.yaml
+    url: https://raw.githubusercontent.com/Hotinosin/clash_rule_fish/refs/heads/ho_edit/Ruleset/custom_rules.yaml
     path: ./providers/rule/rule-provider_custom_rules.yaml
     
   custom_direct:
     <<: *rule-providers-general
-    url: https://raw.githubusercontent.com/Hotinosin/clash-rule/refs/heads/main/payload/custom_direct.yaml
+    url: https://raw.githubusercontent.com/Hotinosin/clash_rule_fish/refs/heads/ho_edit/Ruleset/custom_direct.yaml
     path: ./providers/rule/rule-provider_custom_direct.yaml
     
   custom_ddns:
     <<: *rule-providers-general
-    url: https://raw.githubusercontent.com/Hotinosin/clash-rule/refs/heads/main/payload/custom_ddns.yaml
+    url: https://raw.githubusercontent.com/Hotinosin/clash_rule_fish/refs/heads/ho_edit/Ruleset/custom_ddns.yaml
     path: ./providers/rule/rule-provider_custom_ddns.yaml
 
 ## 路由规则设置---------------------------------------------------------------------------------------------------
