@@ -234,10 +234,12 @@ default-proxy: &default-proxy # 默认代理组
   proxies:
     - ✅默认代理
     - ⚠️故障切换
+    - ⚠️TW故障切换
     - 🖐️手动切换
     - 🇭🇰香港节点
     - 🇭🇰香港VLESS
     - 🇨🇳台湾VLESS
+    - 🇯🇵日本VLESS
     - 🇸🇬狮城节点
     - 🇺🇲美国节点
     - DIRECT
@@ -252,8 +254,16 @@ proxy-groups:
   ##################################
   - name: ⚠️故障切换
     type: fallback
+    proxies:
+      - ⚠️TW-故障切换
+      - 🇯🇵日本VLESS
+      - 🇭🇰香港VLESS
+      - 🖐️手动切换
+
+  - name: ⚠️TW故障切换
+    type: fallback
     <<: *health-check-general
-    filter: "(?=.*(Ho))^((?!(日|韩|深|美|倍)).)*$"
+    filter: "(?=.*(Ho))^((?!(JP|日|韩|深|美|倍)).)*$"
 
   - name: 🖐️手动切换
     type: select
@@ -308,7 +318,7 @@ proxy-groups:
   - name: 🇭🇰香港VLESS
     type: url-test
     <<: *health-check-general
-    filter: "(?=.*(HK-TLS))^((?!(OneYuan|台|日|韩|新|深|美|倍)).)*$"
+    filter: "(?=.*(HK-VLESS))^((?!(OneYuan|台|日|韩|新|深|美|倍)).)*$"
 
   - name: 🇨🇳台湾VLESS
     type: url-test
@@ -320,10 +330,10 @@ proxy-groups:
     <<: *health-check-general
     filter: "(?=.*(新加坡|SG|(?i)Singapore))^((?!(港|台|韩|日|美|倍)).)*$"
 
-  # - name: 🇯🇵日本节点
-  #   type: url-test
-  #   <<: *health-check-general
-  #   filter: "(?=.*(日|日本))^((?!(OneYuan|港|美|新加坡|韩|新|倍)).)*$"
+  - name: 🇯🇵日本VLESS
+    type: url-test
+    <<: *health-check-general
+    filter: "(?=.*(JP|日|日本))^((?!(OneYuan|港|美|新加坡|韩|新|倍)).)*$"
 
 
   - name: 🇺🇲美国节点
