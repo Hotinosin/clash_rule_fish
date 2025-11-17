@@ -199,8 +199,8 @@ proxy-providers-general: &proxy-providers-general # 代理提供者通用配置
   override:
     tfo: false # 启用TCP Fast Open，一般都不支持
     mptcp: false # 启用TCP Multi Path，一般都不支持
-    udp: true # 启用UDP
-    udp-over-tcp: false # 启用UDP over TCP
+    udp: false # 启用UDP
+    # udp-over-tcp: false # 启用UDP over TCP
     skip-cert-verify: false # 跳过证书验证
     # down: "50 Mbps" # 下行限速
     # up: "10 Mbps" # 上行限速
