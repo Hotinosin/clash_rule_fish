@@ -192,12 +192,12 @@ proxy-providers-general: &proxy-providers-general # 代理提供者通用配置
   override:
     tfo: false # 启用TCP Fast Open，一般都不支持
     mptcp: false # 启用TCP Multi Path，一般都不支持
-    udp: true # 启用UDP
-    udp-over-tcp: false # 启用UDP over TCP
+    udp: false # 启用UDP
+    # udp-over-tcp: false # 启用UDP over TCP
     skip-cert-verify: false # 跳过证书验证
     #down: "50 Mbps" # 下行限速
     #up: "10 Mbps" # 上行限速
-    ip-version: dual # 可选dual/ipv4/ipv6/ipv4-prefer/ipv6-prefer，即优先v4或v6，仅v4或v6
+    ip-version: ipv4-prefer # 可选dual/ipv4/ipv6/ipv4-prefer/ipv6-prefer，即优先v4或v6，仅v4或v6
 
 proxy-providers:
   #❗provider占位1
@@ -242,6 +242,9 @@ default-direct: &default-direct # 默认直连组
     - ♻️延迟最低
     - ⚠️故障切换
     - 🖐️手动切换
+    - 🇨🇳Akilo-TW
+    - 🇨🇳Akilo-HK
+    - 🇯🇵Akilo-JP
     - 🇭🇰香港节点
     - 🇨🇳台湾节点
     - 🇸🇬狮城节点
@@ -269,6 +272,9 @@ proxy-groups:
       - ♻️延迟最低
       - ⚠️故障切换
       - 🖐️手动切换
+      - 🇨🇳Akilo-TW
+      - 🇨🇳Akilo-HK
+      - 🇯🇵Akilo-JP
       - 🇭🇰香港节点
       - 🇨🇳台湾节点
       - 🇸🇬狮城节点
@@ -352,6 +358,21 @@ proxy-groups:
     type: url-test
     <<: *health-check-general
     filter: "新加坡|坡|狮城|SG|Singapore"
+    
+  - name: 🇨🇳Akilo-TW
+    type: select
+    <<: *health-check-general
+    filter: "(?=.*(台|新北|彰化|TW|Taiwan))^((?!(FNF|港|美|日|韩|新|倍)).)*$"
+    
+  - name: 🇨🇳Akilo-HK
+    type: select
+    <<: *health-check-general
+    filter: "(?=.*(港|HK|hk|Hong Kong|HongKong|hongkong|(?i)Hong))^((?!(FNF|港|美|日|韩|新|倍)).)*$"
+
+  - name: 🇯🇵Akilo-JP
+    type: select
+    <<: *health-check-general
+    filter: "(?=.*(JP))^((?!(FNF|港|美|日|韩|新|倍)).)*$"
 
 ## 规则提供者设置---------------------------------------------------------------------------------------------------
 rule-providers-general: &rule-providers-general
