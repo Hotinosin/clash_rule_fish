@@ -256,14 +256,15 @@ proxy-groups:
     type: fallback
     proxies:
       - ⚠️TW故障切换
-      - 🇯🇵日本VLESS
       - 🇭🇰香港VLESS
+      - 🇨🇳台湾VLESS
+      - 🇯🇵日本VLESS
       - 🖐️手动切换
 
   - name: ⚠️TW故障切换
     type: fallback
     <<: *health-check-general
-    filter: "(?=.*(Ho))^((?!(JP|日|韩|深|美|倍)).)*$"
+    filter: "(?=.*(Ho))^((?!(HK|JP|日|韩|深|美|倍)).)*$"
 
   - name: 🖐️手动切换
     type: select
@@ -280,6 +281,7 @@ proxy-groups:
       - 🇭🇰香港节点
       - 🇭🇰香港VLESS
       - 🇨🇳台湾VLESS
+      - 🇯🇵日本VLESS
       - 🇸🇬狮城节点
       - 🇺🇲美国节点
       - DIRECT
@@ -314,6 +316,11 @@ proxy-groups:
     type: url-test
     <<: *health-check-general
     filter: "(?=.*(港|HK|hk|Hong Kong|HongKong|hongkong|(?i)Hong))^((?!(台|日|韩|新|深|美|倍)).)*$"
+    
+  - name: 🇨🇳台湾节点
+    type: url-test
+    <<: *health-check-general
+    filter: "(?=.*(台|新北|彰化|TW|Taiwan))^((?!(港|美|日|韩|新|倍)).)*$"
 
   - name: 🇭🇰香港VLESS
     type: url-test
