@@ -397,7 +397,6 @@ rules:
   - GEOSITE,onedrive,DIRECT
   - GEOSITE,bilibili,DIRECT
   - GEOSITE,feishu,DIRECT #飞书
-  - GEOSITE,taobao,DIRECT #淘宝
   - GEOSITE,bytedance,DIRECT #字节跳动
   - RULE-SET,custom_direct,DIRECT
   - RULE-SET,custom_ddns,DIRECT
