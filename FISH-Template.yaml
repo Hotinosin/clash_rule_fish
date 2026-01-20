@@ -109,7 +109,7 @@ dns:
     - "geosite:category-ads-all" # 广告域名，交给redirect-host模块返回空结果
 
   # redir-host配置段
-  default-nameserver: *secure-dns # 解析DNS服务器域名的DNS，可以加密但必须为IP，如果不用DNS服务器的域名则无需配置
+  default-nameserver: *public-dns # 解析DNS服务器域名的DNS，可以加密但必须为IP，如果不用DNS服务器的域名则无需配置
   proxy-server-nameserver: *secure-dns # 解析代理节点域名的DNS，不填则遵循namepolicy
   direct-nameserver: *public-dns # 解析direct出口域名的DNS，不填则遵循namepolicy，nameserver和fallback
   direct-nameserver-follow-policy: false # direct出口域名是否遵循nameserver-policy，默认false则使用direct-nameserver，仅当direct-nameserver不为空时生效
