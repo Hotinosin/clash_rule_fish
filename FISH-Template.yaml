@@ -296,7 +296,7 @@ proxy-groups:
 
   - name: 🧱GFW
     type: select
-    <<: *default-proxy
+    <<: *default-direct
 
   - name: 🎮Steam
     type: select
@@ -308,7 +308,7 @@ proxy-groups:
 
   - name: ✈️ Speedtest
     type: select
-    <<: *default-proxy
+    <<: *default-direct
 
   ##################################
   - name: 🇭🇰香港节点
@@ -340,7 +340,6 @@ proxy-groups:
     type: url-test
     <<: *health-check-general
     filter: "(?=.*(JP|日|日本))^((?!(OneYuan|港|美|新加坡|韩|新|倍)).)*$"
-
 
   - name: 🇺🇲美国节点
     type: url-test
