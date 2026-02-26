@@ -100,14 +100,15 @@ dns:
     - "rule-set:custom_direct" #ho的直连域名
     - "geosite:private" # 私有地址，包括stun，lan，路由器后台网址等域名
     - "geosite:category-ntp" # NTP域名
-    - "geosite:tailscale" # Tailscale域名，包括P2P打洞过程
+    # - "geosite:tailscale" # Tailscale域名，包括P2P打洞过程
     - "geosite:apple" # 苹果域名，配合双WAN分流可以避免长链接耗电问题
     - "geosite:category-cas" # 各类证书颁发机构域名
     - "geosite:category-public-tracker" # 公共tracker域名
     - "geosite:win-update" # Windows操作系统升级域名
     - "geosite:category-game-platforms-download" # 各类游戏平台下载域名，包括steam下载
-    - "geosite:geolocation-cn" # 地理位置在中国的域名，不包括谷歌在中国的域名避免谷歌商店下载问题，关于谷歌商店下载，详见♻️延迟最低文件内容
-    - "geosite:geolocation-!cn@cn" # 地理位置不在中国的域名中具有国内CDN的部分，包括Steam在的国内CDN
+    # - "geosite:geolocation-cn" # 地理位置在中国的域名，不包括谷歌在中国的域名避免谷歌商店下载问题，关于谷歌商店下载，详见♻️延迟最低文件内容
+    - "geosite:cn"
+    # - "geosite:geolocation-!cn@cn" # 地理位置不在中国的域名中具有国内CDN的部分，包括Steam在的国内CDN
     - "geosite:category-ads-all" # 广告域名，交给redirect-host模块返回空结果
 
   # redir-host配置段
