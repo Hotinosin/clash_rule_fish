@@ -27,7 +27,7 @@ unified-delay: false # 统一延迟计算，没啥卵用，就是界面好看，
 #routing-mark: 6666  # 非linux无效，路由标记，为流量提供标记以供其他应用进行流量处理
 
 ## TCP-KeepA-live配置 ------------------------------------------------------------------------------------------
-keep-alive-idle: 30 # 触发心跳包的链路无活动阈值，无活动后发送心跳包检测对端是否存活
+keep-alive-idle: 120 # 触发心跳包的链路无活动阈值，无活动后发送心跳包检测对端是否存活
 keep-alive-interval: 15 # 发送心跳包的间隔，无回应则最多重发9次后判断链路关闭
 disable-keep-alive: false # 禁用 keep alive，即允许长链接一直存在，安卓端会强制设定为true
 
@@ -197,7 +197,7 @@ proxy-providers-general: &proxy-providers-general # 代理提供者通用配置
   interval: 259200 # 更新间隔，单位秒
   proxy: DIRECT # http类型更新时使用的代理组，不建议设置代理，如果你的机场需要代理才能订阅，那先有鸡还是先有蛋？
   size-limit: 0 # 文件大小限制，0为不限制
-  exclude-filter: "(?i)官网|每月刷新订阅|机场|到期|https://|剩余流量"
+  exclude-filter: "(?i)客户端|官网|每月刷新订阅|机场|到期|https://|剩余流量"
   override: # 同名覆盖
     #tfo: false # 启用TCP Fast Open，一般都不支持
     #mptcp: false # 启用TCP Multi Path，一般都不支持
