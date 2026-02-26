@@ -41,7 +41,7 @@ external-ui-url: "https://ghfast.top/https://github.com/Zephyruso/zashboard/rele
 ## 缓存设置
 profile:
   store-selected: true # 缓存 API面板 对策略组的选择
-  store-fake-ip: true # 缓存 fakeip 映射表
+  store-fake-ip: flase # 缓存 fakeip 映射表
 
 ## 外部资源下载设置---------------------------------------------------------------------------------------------------
 global-client-fingerprint: random # 全局客户端指纹，优先级低于其他处的声明
