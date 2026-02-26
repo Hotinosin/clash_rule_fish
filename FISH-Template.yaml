@@ -240,7 +240,7 @@ default-proxy: &default-proxy # 默认代理组
     - 🖐️手动切换
     - 🇨🇳台湾VLESS
     - 🇯🇵日本VLESS
-    - 🇸🇬狮城节点
+    # - 🇸🇬狮城节点
     - 🇺🇲美国VLESS
     - DIRECT
 
