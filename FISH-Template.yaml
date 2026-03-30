@@ -311,6 +311,10 @@ proxy-groups:
     type: select
     <<: *default-direct
 
+  - name: 🅿️ IP-Check
+    type: select
+    <<: *default-direct
+  
   ##################################
   # - name: 🇭🇰香港节点
   #   type: url-test
@@ -391,6 +395,7 @@ rules:
 
   # Direct 直连规则
   - GEOSITE,cn,DIRECT
+  - GEOSITE,CATEGORY-IP-GEO-DETECT,🅿️ IP-Check
   - GEOSITE,speedtest,✈️ Speedtest
   - GEOSITE,tencent,DIRECT
   - GEOSITE,tencent-games,DIRECT
