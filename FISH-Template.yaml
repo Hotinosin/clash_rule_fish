@@ -307,7 +307,7 @@ proxy-groups:
     type: select
     <<: *default-direct
 
-  - name: ✈️ Speedtest
+  - name: ✈️Speedtest
     type: select
     <<: *default-direct
 
@@ -394,18 +394,17 @@ rules:
   - GEOSITE,private,DIRECT # 私有地址直连
 
   # Direct 直连规则
+  - GEOSITE,CATEGORY-SPEEDTEST,✈️Speedtest
   - GEOSITE,CATEGORY-IP-GEO-DETECT,🅿️IP-Check
-  - GEOSITE,speedtest,✈️ Speedtest
   - GEOSITE,tencent,🌐默认直连
   - GEOSITE,tencent-games,🌐默认直连
   - GEOSITE,apple,🌐默认直连
   - GEOSITE,onedrive,🌐默认直连
   - GEOSITE,bilibili,🌐默认直连
-  - GEOSITE,feishu,🌐默认直连 #飞书
-  - GEOSITE,bytedance,🌐默认直连 #字节跳动
+  - GEOSITE,feishu,🌐默认直连
+  - GEOSITE,bytedance,🌐默认直连
   - RULE-SET,custom_direct,🌐默认直连
   - RULE-SET,custom_ddns,🌐默认直连
-  - GEOSITE,synology,🌐默认直连 # 群晖服务，包括QC
 
 
   # AI相关
