@@ -297,7 +297,7 @@ proxy-groups:
 
   - name: 🧱GFW
     type: select
-    <<: *default-direct
+    <<: *default-proxy
 
   - name: 🎮Steam
     type: select
@@ -390,6 +390,7 @@ rules:
   - GEOSITE,private,DIRECT # 私有地址直连
 
   # Direct 直连规则
+  - GEOSITE,cn,DIRECT
   - GEOSITE,speedtest,✈️ Speedtest
   - GEOSITE,tencent,DIRECT
   - GEOSITE,tencent-games,DIRECT
