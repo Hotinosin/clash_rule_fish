@@ -13,7 +13,7 @@ log-level: warning # 内核日志级别
 ipv6: true # 是否接受ipv6流量
 tcp-concurrent: true # TCP并发
 #interface-name: en0  # clash流量出站接口，即接口绑定
-find-process-mode: strict # 进程匹配模式（off:关闭，alwas:开启，strict自动），tun模式下无效
+find-process-mode: off # 进程匹配模式（off:关闭，alwas:开启，strict自动），tun模式下无效
 lan-allowed-ips: # 允许连接的客户端IP，默认允许全部
   - 0.0.0.0/0
   - ::/0
@@ -72,7 +72,7 @@ public-dns: &public-dns # 快速的DNS，不关心是否存在污染和劫持，
   # - dhcp://wan # 指定网卡DHCP获取的DNS，硬路由的wan口网卡名一般为wan
   # - dhcp://eth3 # 软路由的wan口一般为最后一张网卡，eth0,eth1 双网口就是eth1
   - 119.29.29.29
-  - 233.5.5.5
+  - 223.5.5.5
   # - 114.114.114.114
 
 secure-dns: &secure-dns # 加密的DNS，必须避免被解析为0.0.0.0等污染，为域名时必须搭配default-nameserver使用
@@ -110,6 +110,10 @@ dns:
     - "geosite:cn"
     # - "geosite:geolocation-!cn@cn" # 地理位置不在中国的域名中具有国内CDN的部分，包括Steam在的国内CDN
     - "geosite:category-ads-all" # 广告域名，交给redirect-host模块返回空结果
+    - "address:/+.local/" # 局域网 mDNS 地址
+    - "address:/+.home.arpa/"
+    - "address:/+.lan/"
+    - "*.local"
 
   # redir-host配置段
   default-nameserver: *public-dns # 解析DNS服务器域名的DNS，可以加密但必须为IP，如果不用DNS服务器的域名则无需配置
